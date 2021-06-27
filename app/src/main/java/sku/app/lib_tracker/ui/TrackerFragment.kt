@@ -1,4 +1,4 @@
-package sku.app.lib_tracker
+package sku.app.lib_tracker.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,6 +8,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
+import sku.app.lib_tracker.LibraryAdapter
+import sku.app.lib_tracker.R
 import sku.app.lib_tracker.databinding.TrackerFragmentBinding
 
 @AndroidEntryPoint

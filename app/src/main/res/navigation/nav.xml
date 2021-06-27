@@ -7,6 +7,6 @@
 
     <fragment
         android:id="@+id/trackerFragment"
-        android:name="sku.app.lib_tracker.TrackerFragment"
+        android:name="sku.app.lib_tracker.ui.TrackerFragment"
         android:label="TrackerFragment" />
 </navigation>
