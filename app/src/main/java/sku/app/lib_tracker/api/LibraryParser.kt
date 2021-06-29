@@ -2,9 +2,9 @@ package sku.app.lib_tracker.api
 
 import android.util.Xml
 import org.xmlpull.v1.XmlPullParser
-import sku.app.lib_tracker.Artifact
-import sku.app.lib_tracker.Library
-import sku.app.lib_tracker.Version
+import sku.app.lib_tracker.vo.Artifact
+import sku.app.lib_tracker.vo.Library
+import sku.app.lib_tracker.vo.Version
 
 class LibraryParser(private val response: String) {
 

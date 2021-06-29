@@ -6,9 +6,9 @@ import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
-import sku.app.lib_tracker.Artifact
-import sku.app.lib_tracker.Library
-import sku.app.lib_tracker.Version
+import sku.app.lib_tracker.vo.Artifact
+import sku.app.lib_tracker.vo.Library
+import sku.app.lib_tracker.vo.Version
 
 
 @RunWith(AndroidJUnit4::class)

@@ -3,7 +3,7 @@ package sku.app.lib_tracker.ui
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import sku.app.lib_tracker.Package
+import sku.app.lib_tracker.vo.Package
 import javax.inject.Inject
 
 @HiltViewModel

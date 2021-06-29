@@ -2,7 +2,7 @@ package sku.app.lib_tracker.api
 
 import android.util.Xml
 import org.xmlpull.v1.XmlPullParser
-import sku.app.lib_tracker.Package
+import sku.app.lib_tracker.vo.Package
 
 class PackageParser(private val response: String) {
 

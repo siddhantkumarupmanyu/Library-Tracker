@@ -8,7 +8,7 @@
 
         <variable
             name="library"
-            type="sku.app.lib_tracker.Package" />
+            type="sku.app.lib_tracker.vo.Package" />
 
     </data>
 

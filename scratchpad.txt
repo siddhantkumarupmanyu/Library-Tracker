@@ -2,8 +2,6 @@
 
 ======================================================
 
-move Artifact into separate file
-
 we will only track latest stable release and latest version, not all releases
 
 library should contain artifacts and not vice versa

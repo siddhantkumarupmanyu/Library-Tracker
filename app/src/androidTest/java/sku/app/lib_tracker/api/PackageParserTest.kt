@@ -6,7 +6,7 @@ import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
-import sku.app.lib_tracker.Package
+import sku.app.lib_tracker.vo.Package
 
 @RunWith(AndroidJUnit4::class)
 class PackageParserTest {

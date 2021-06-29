@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import sku.app.lib_tracker.Package
+import sku.app.lib_tracker.vo.Package
 import sku.app.lib_tracker.databinding.ListItemBinding
 
 class LibraryAdapter : ListAdapter<Package, RecyclerView.ViewHolder>(DiffCallback()) {
