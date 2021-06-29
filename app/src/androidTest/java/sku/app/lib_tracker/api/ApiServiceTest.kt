@@ -2,9 +2,7 @@ package sku.app.lib_tracker.api
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import kotlinx.coroutines.runBlocking
-import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
-import okio.Okio
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.After
@@ -13,8 +11,8 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import retrofit2.Retrofit
 import sku.app.lib_tracker.utils.enqueueResponse
+import sku.app.lib_tracker.vo.Artifact.Version
 import sku.app.lib_tracker.vo.Package
-import sku.app.lib_tracker.vo.Version
 import java.util.concurrent.TimeUnit
 
 @RunWith(AndroidJUnit4::class)
@@ -59,7 +57,7 @@ class ApiServiceTest {
     }
 
     @Test
-    fun library() = runBlocking{
+    fun library() = runBlocking {
         mockWebServer.enqueueResponse("activity-group-index.xml")
 
         val pack = Package("androidx.activity")

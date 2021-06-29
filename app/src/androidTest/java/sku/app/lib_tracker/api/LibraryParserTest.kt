@@ -8,7 +8,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import sku.app.lib_tracker.vo.Artifact
 import sku.app.lib_tracker.vo.Library
-import sku.app.lib_tracker.vo.Version
+import sku.app.lib_tracker.vo.Artifact.Version
 
 
 @RunWith(AndroidJUnit4::class)
