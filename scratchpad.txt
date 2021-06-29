@@ -2,6 +2,11 @@
 
 ======================================================
 
+Add ApiResponse Class
+
+TODO: implement library requests to run in parallel
+see - https://stackoverflow.com/questions/54458960/test-with-consecutive-calls-to-mockwebserver
+
 we will only track latest stable release and latest version, not all releases
 
 library should contain artifacts and not vice versa

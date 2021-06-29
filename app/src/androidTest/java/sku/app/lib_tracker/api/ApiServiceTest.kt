@@ -12,6 +12,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import retrofit2.Retrofit
+import sku.app.lib_tracker.utils.enqueueResponse
 import sku.app.lib_tracker.vo.Package
 import sku.app.lib_tracker.vo.Version
 import java.util.concurrent.TimeUnit
@@ -43,7 +44,7 @@ class ApiServiceTest {
 
     @Test
     fun packages() = runBlocking {
-        enqueueResponse("master-index.xml")
+        mockWebServer.enqueueResponse("master-index.xml")
 
         val packages = service.getPackages()
 
@@ -59,7 +60,7 @@ class ApiServiceTest {
 
     @Test
     fun library() = runBlocking{
-        enqueueResponse("activity-group-index.xml")
+        mockWebServer.enqueueResponse("activity-group-index.xml")
 
         val pack = Package("androidx.activity")
         val activity = service.getLibrary(pack.urlString)
@@ -73,19 +74,5 @@ class ApiServiceTest {
         assertThat(activityArtifact.name, `is`("activity"))
         assertThat(activityArtifact.version, `is`(Version("1.2.3", "1.3.0-beta02")))
         assertThat(activityArtifact.packageName, `is`("androidx.activity"))
-    }
-
-    private fun enqueueResponse(fileName: String, headers: Map<String, String> = emptyMap()) {
-        val inputStream = javaClass.classLoader!!
-            .getResourceAsStream("api-response/$fileName")
-        val source = Okio.buffer(Okio.source(inputStream))
-        val mockResponse = MockResponse()
-        for ((key, value) in headers) {
-            mockResponse.addHeader(key, value)
-        }
-        mockWebServer.enqueue(
-            mockResponse
-                .setBody(source.readString(Charsets.UTF_8))
-        )
     }
 }
