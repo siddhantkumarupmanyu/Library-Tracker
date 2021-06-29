@@ -1,13 +1,14 @@
-package sku.app.lib_tracker
+package sku.app.lib_tracker.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import sku.app.lib_tracker.Package
 import sku.app.lib_tracker.databinding.ListItemBinding
 
-class LibraryAdapter : ListAdapter<Library, RecyclerView.ViewHolder>(DiffCallback()) {
+class LibraryAdapter : ListAdapter<Package, RecyclerView.ViewHolder>(DiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return LibraryHolder(
             ListItemBinding.inflate(
@@ -24,22 +25,22 @@ class LibraryAdapter : ListAdapter<Library, RecyclerView.ViewHolder>(DiffCallbac
     }
 
     class LibraryHolder(private val binding: ListItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Library) {
+        fun bind(item: Package) {
             binding.apply {
                 library = item
                 executePendingBindings()
             }
         }
     }
-}
 
-class DiffCallback : DiffUtil.ItemCallback<Library>() {
-    override fun areItemsTheSame(oldItem: Library, newItem: Library): Boolean {
-        return oldItem.name == newItem.name
+    class DiffCallback : DiffUtil.ItemCallback<Package>() {
+        override fun areItemsTheSame(oldItem: Package, newItem: Package): Boolean {
+            return oldItem.packageName == newItem.packageName
+        }
+
+        override fun areContentsTheSame(oldItem: Package, newItem: Package): Boolean {
+            return oldItem == newItem
+        }
+
     }
-
-    override fun areContentsTheSame(oldItem: Library, newItem: Library): Boolean {
-        return oldItem == newItem
-    }
-
 }

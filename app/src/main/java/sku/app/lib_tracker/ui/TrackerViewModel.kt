@@ -3,13 +3,13 @@ package sku.app.lib_tracker.ui
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import sku.app.lib_tracker.Library
+import sku.app.lib_tracker.Package
 import javax.inject.Inject
 
 @HiltViewModel
 class TrackerViewModel @Inject constructor() : ViewModel() {
 
-    val testData = MutableLiveData<List<Library>>()
+    val testData = MutableLiveData<List<Package>>()
 
     init {
 
@@ -19,9 +19,9 @@ class TrackerViewModel @Inject constructor() : ViewModel() {
 
     }
 
-    private fun getLibs(): List<Library> {
+    private fun getLibs(): List<Package> {
         return MutableList(20) {
-            Library("name$it", "version$it")
+            Package("name$it")
         }
     }
 }

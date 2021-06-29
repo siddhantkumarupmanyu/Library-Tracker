@@ -1,0 +1,36 @@
+
+
+======================================================
+
+move Artifact into separate file
+
+we will only track latest stable release and latest version, not all releases
+
+library should contain artifacts and not vice versa
+    - Instead of saying library parser we can say package parser
+
+Feature 0: run work when ever user opens the app.
+    - should consider the case when user opens it multiple times in a day.
+        - in that case we should only fetch it one time; on first opening
+        - Feature 4, user can force fetch though
+
+Feature 1: Able to notify if new versions of bookmarked artifacts are available
+Feature 2: Able to diff between last fetch and new fetch
+    - this feature restricts us to only fetch when user reopens the app
+    - and not in the background
+Feature 3: What is I just combine feature 1 & 2
+    - we will only give diff between the bookmarked libraries
+
+Comparing Versions of Artifacts
+    - Will enable us implement feature 3
+
+
+Feature 4: ability to force fetch
+
+Errors:
+    - Show error on app opening if network is not available
+    - error when something parsing goes wrong or fetching goes wrong
+
+
+
+
