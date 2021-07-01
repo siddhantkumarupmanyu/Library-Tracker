@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.flowclone.util
+package sku.app.lib_tracker.utils
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers

@@ -8,36 +8,58 @@ who should be responsible for mapping or creating Library From the artifacts
 
 Add ApiResponse Class
 
-TODO: implement library requests to run in parallel
-see - https://stackoverflow.com/questions/54458960/test-with-consecutive-calls-to-mockwebserver
+implement api requests to run in parallel
+    - https://stackoverflow.com/questions/54458960/test-with-consecutive-calls-to-mockwebserver
+    - https://stackoverflow.com/a/58659423
 
-we will only track latest stable release and latest version, not all releases
+how do I want to update the data
+    - one way is to update or insert the data everytime new data arrives
+    - second way is to manually diff for new data
+    - third way is to let room handle this for us
+        - this is good; will see if room have something like this; so update operations are faster
+        - I think room automatically diff
 
-library should contain artifacts and not vice versa
-    - Instead of saying library parser we can say package parser
+updatedView will only show libraries which are bookmarked and latestVersion > oldVersion
 
-Feature 0: run work when ever user opens the app.
+Feature 0: run work whenever user opens the app. (by default)
     - should consider the case when user opens it multiple times in a day.
         - in that case we should only fetch it one time; on first opening
-        - Feature 4, user can force fetch though
+    - user can force fetch though
 
-Feature 1: Able to notify if new versions of bookmarked artifacts are available
-Feature 2: Able to diff between last fetch and new fetch
-    - this feature restricts us to only fetch when user reopens the app
-    - and not in the background
-Feature 3: What is I just combine feature 1 & 2
-    - we will only give diff between the bookmarked libraries
+Feature 1: Ability to Bookmark Libraries
+    - only show diff between bookmarked libraries
+    - auto fetch and showNotifications can be enabled
+        - will show notification if bookmarked library changes
+
+Feature 2: user should have ability to enable fetching in background
+    - in that case we gonna fetch every 12 hours
+
+From what I see we are going to need to use shared-pref
+    - in that case We should use datastore
+
+Data Store keys:
+    - lastFetch: stores current day
+    - areNotifications enabled
 
 Comparing Versions of Artifacts
-    - Will enable us implement feature 3
+    - Will enable us implement feature 1
 
 
 Feature 4: ability to force fetch
 
 Errors:
     - Show error on app opening if network is not available
-    - error when something parsing goes wrong or fetching goes wrong
+    - error when parsing goes wrong or fetching goes wrong
 
 
+========================================================================
+NOTES
+
+https://stackoverflow.com/a/58659423
+    - The reason he's saying we do not need Dispatchers.IO
+    - https://medium.com/androiddevelopers/coroutines-on-android-part-i-getting-the-background-3e0e54d20bb
+    - * Room will provide main-safety automatically if you use suspend functions, RxJava, or LiveData.
+      ** Networking libraries such as Retrofit and Volley manage their own threads
+       and do not require explicit main-safety in your code when used with Kotlin coroutines.
 
 
