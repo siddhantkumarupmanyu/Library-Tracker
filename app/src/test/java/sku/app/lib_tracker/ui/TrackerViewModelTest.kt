@@ -46,8 +46,6 @@ class TrackerViewModelTest {
         val flow = flowOf(listOf(activityLibrary, roomLibrary))
         `when`(repository.loadLibraries()).thenReturn(flow)
 
-        viewModel.loadLibraries()
-
         assertThat(
             viewModel.libraries.getOrAwaitValue(),
             `is`(equalTo(listOf(activityLibrary, roomLibrary)))

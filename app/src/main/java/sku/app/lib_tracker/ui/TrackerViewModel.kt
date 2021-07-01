@@ -1,6 +1,9 @@
 package sku.app.lib_tracker.ui
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.liveData
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -18,12 +21,16 @@ class TrackerViewModel @Inject constructor(
 
     val libraries: LiveData<List<Library>> = liveData {
         repository.loadLibraries().collect {
-            println(it)
+            // println(it)
             emit(it)
         }
     }
 
-    fun loadLibraries() {
+    init {
+        loadLibraries()
+    }
+
+    private fun loadLibraries() {
         viewModelScope.launch {
             repository.fetchAndSave()
         }

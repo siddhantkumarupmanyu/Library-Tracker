@@ -48,14 +48,11 @@ class TrackerFragment : Fragment() {
         adapter = LibraryAdapter()
         binding.listView.adapter = adapter
 
-        // viewModel.libraries.observe(viewLifecycleOwner) {
-        //     it?.let { libraries ->
-        //         adapter.submitList(libraries)
-        //     }
-        // }
-
-        adapter.submitList(testList())
-
+        viewModel.libraries.observe(viewLifecycleOwner) {
+            it?.let { libraries ->
+                adapter.submitList(libraries)
+            }
+        }
     }
 
     private fun testList() = listOf(

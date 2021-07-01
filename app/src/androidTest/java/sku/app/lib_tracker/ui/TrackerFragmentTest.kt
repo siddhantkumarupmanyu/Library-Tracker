@@ -61,6 +61,7 @@ class TrackerFragmentTest {
 
     @Test
     fun librariesAreLoaded(): Unit = runBlocking {
+
         onView(recyclerViewMatcher.atPosition(0))
             .check(matches(hasDescendant(withText("artifact0"))))
 
@@ -72,7 +73,6 @@ class TrackerFragmentTest {
 
         onView(recyclerViewMatcher.atPosition(1))
             .check(matches(hasDescendant(withText("1.2.3"))))
-
 
         verify(repository).fetchAndSave()
         verify(repository).loadLibraries()
