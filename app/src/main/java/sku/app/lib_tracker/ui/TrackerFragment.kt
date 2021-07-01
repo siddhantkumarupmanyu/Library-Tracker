@@ -10,6 +10,8 @@ import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import sku.app.lib_tracker.R
 import sku.app.lib_tracker.databinding.TrackerFragmentBinding
+import sku.app.lib_tracker.vo.Artifact
+import sku.app.lib_tracker.vo.Library
 
 @AndroidEntryPoint
 class TrackerFragment : Fragment() {
@@ -46,10 +48,46 @@ class TrackerFragment : Fragment() {
         adapter = LibraryAdapter()
         binding.listView.adapter = adapter
 
-        viewModel.testData.observe(viewLifecycleOwner) { libs ->
-            adapter.submitList(libs)
-        }
+        // viewModel.libraries.observe(viewLifecycleOwner) {
+        //     it?.let { libraries ->
+        //         adapter.submitList(libraries)
+        //     }
+        // }
+
+        adapter.submitList(testList())
+
     }
+
+    private fun testList() = listOf(
+        Library(
+            "androidx.activity", listOf(
+                Artifact(
+                    "activity",
+                    Artifact.Version("1.0.1", "1.1.1-beta01"),
+                    "androidx.activity"
+                ),
+                Artifact(
+                    "activity-compose",
+                    Artifact.Version("1.0.1", "1.1.1-beta01"),
+                    "androidx.activity"
+                )
+            )
+        ),
+        Library(
+            "androidx.room", listOf(
+                Artifact(
+                    "room",
+                    Artifact.Version("1.0.1", "1.1.1-beta01"),
+                    "androidx.room"
+                ),
+                Artifact(
+                    "room-ktx",
+                    Artifact.Version("1.0.1", "1.1.1-beta01"),
+                    "androidx.room"
+                )
+            )
+        )
+    )
 
     override fun onDestroyView() {
         super.onDestroyView()

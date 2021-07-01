@@ -6,9 +6,10 @@ import sku.app.lib_tracker.api.ApiService
 import sku.app.lib_tracker.db.TrackerDao
 import sku.app.lib_tracker.vo.Artifact
 import sku.app.lib_tracker.vo.Library
+import javax.inject.Inject
 
 // lack of better name
-class TrackerRepositoryImpl(
+class TrackerRepositoryImpl @Inject constructor(
     private val apiService: ApiService,
     private val trackerDao: TrackerDao
 ) : TrackerRepository {
@@ -44,7 +45,7 @@ class TrackerRepositoryImpl(
     private fun getDifferentArtifacts(list: List<Artifact>): Map<String, List<Artifact>> {
         val map = mutableMapOf<String, MutableList<Artifact>>()
         for (item in list) {
-            // val mutableList = map.putIfAbsent(item.packageName, mutableListOf())!! not working
+            // val mutableList = map.putIfAbsent(item.packageName, mutableListOf())!! // not working
             val mutableList = map.getOrPut(item.packageName, { mutableListOf() })
             mutableList.add(item)
         }

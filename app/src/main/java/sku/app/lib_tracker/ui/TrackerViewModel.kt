@@ -1,27 +1,37 @@
 package sku.app.lib_tracker.ui
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
-import sku.app.lib_tracker.vo.Package
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
+import sku.app.lib_tracker.repository.TrackerRepository
+import sku.app.lib_tracker.vo.Library
 import javax.inject.Inject
 
 @HiltViewModel
-class TrackerViewModel @Inject constructor() : ViewModel() {
+class TrackerViewModel @Inject constructor(
+    private val repository: TrackerRepository
+) : ViewModel() {
 
-    val testData = MutableLiveData<List<Package>>()
+    // private val _libraries = MutableLiveData<List<Library>>()
+    // val libraries: LiveData<List<Library>> = _libraries
 
-    init {
-
-        val libs = getLibs()
-
-        testData.postValue(libs)
-
-    }
-
-    private fun getLibs(): List<Package> {
-        return MutableList(20) {
-            Package("name$it")
+    val libraries: LiveData<List<Library>> = liveData {
+        repository.loadLibraries().collect {
+            println(it)
+            emit(it)
         }
     }
+
+    fun loadLibraries() {
+        viewModelScope.launch {
+            repository.fetchAndSave()
+        }
+        // viewModelScope.launch {
+        //     repository.loadLibraries().collect {
+        //         _libraries.value = it
+        //     }
+        // }
+    }
+
 }
