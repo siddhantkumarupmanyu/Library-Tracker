@@ -52,6 +52,8 @@ Errors:
     - error when parsing goes wrong or fetching goes wrong
 
 
+update date for a library is same as last modified header date in response of group-index
+
 ========================================================================
 NOTES
 

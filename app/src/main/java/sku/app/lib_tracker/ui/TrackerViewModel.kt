@@ -27,7 +27,7 @@ class TrackerViewModel @Inject constructor(
     }
 
     init {
-        loadLibraries()
+        // loadLibraries()
     }
 
     private fun loadLibraries() {

@@ -37,6 +37,8 @@ class LibraryAdapter : ListAdapter<Library, RecyclerView.ViewHolder>(DiffCallbac
         }
 
         private fun addArtifacts(item: Library) {
+            binding.linearLayout.removeAllViews()
+
             for (artifact in item.artifacts) {
                 val artifactBinding = ArtifactItemBinding.inflate(
                     LayoutInflater.from(binding.linearLayout.context),
