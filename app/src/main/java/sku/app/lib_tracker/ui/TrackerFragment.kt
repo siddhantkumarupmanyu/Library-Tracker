@@ -1,13 +1,14 @@
 package sku.app.lib_tracker.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.work.WorkInfo
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import sku.app.lib_tracker.R
 import sku.app.lib_tracker.databinding.TrackerFragmentBinding
@@ -52,6 +53,20 @@ class TrackerFragment : Fragment() {
         viewModel.libraries.observe(viewLifecycleOwner) {
             it?.let { libraries ->
                 adapter.submitList(libraries)
+            }
+        }
+
+        viewModel.fetchWorkInfo.observe(viewLifecycleOwner) { infos ->
+            val info = infos[0]
+            val state = info.state
+            if (state == WorkInfo.State.SUCCEEDED) {
+                Snackbar.make(binding.root, R.string.updated_libs, Snackbar.LENGTH_LONG).show()
+            } else if (state == WorkInfo.State.FAILED) {
+                Snackbar.make(binding.root, R.string.update_failed, Snackbar.LENGTH_SHORT)
+                    .setAction("Retry") {
+                        viewModel.loadLibraries()
+                    }
+                    .show()
             }
         }
     }

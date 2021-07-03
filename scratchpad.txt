@@ -33,6 +33,7 @@ Feature 1: Ability to Bookmark Libraries
 
 Feature 2: user should have ability to enable fetching in background
     - in that case we gonna fetch every 12 hours
+    - i.e. giving work manager interval of 12 hours
 
 From what I see we are going to need to use shared-pref
     - in that case We should use datastore
