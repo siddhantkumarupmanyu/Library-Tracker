@@ -36,7 +36,7 @@ class TrackerViewModel @Inject constructor(
     val fetchWorkInfo = workManager.getWorkInfosByTagLiveData(FETCH_WORK_TAG)
 
     init {
-        loadLibraries()
+        // loadLibraries()
     }
 
     fun loadLibraries() {

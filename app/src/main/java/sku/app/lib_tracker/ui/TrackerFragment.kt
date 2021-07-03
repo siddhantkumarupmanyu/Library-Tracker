@@ -61,7 +61,7 @@ class TrackerFragment : Fragment() {
             val state = info.state
             if (state == WorkInfo.State.SUCCEEDED) {
                 Snackbar.make(binding.root, R.string.updated_libs, Snackbar.LENGTH_LONG).show()
-            } else if (state == WorkInfo.State.FAILED) {
+            } else if (state == WorkInfo.State.CANCELLED || state == WorkInfo.State.FAILED) {
                 Snackbar.make(binding.root, R.string.update_failed, Snackbar.LENGTH_SHORT)
                     .setAction("Retry") {
                         viewModel.loadLibraries()
