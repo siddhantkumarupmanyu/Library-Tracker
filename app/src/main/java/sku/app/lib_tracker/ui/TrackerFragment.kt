@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.work.WorkInfo
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import sku.app.lib_tracker.R
@@ -56,12 +55,10 @@ class TrackerFragment : Fragment() {
             }
         }
 
-        viewModel.fetchWorkInfo.observe(viewLifecycleOwner) { infos ->
-            val info = infos[0]
-            val state = info.state
-            if (state == WorkInfo.State.SUCCEEDED) {
+        viewModel.fetchWorkerState.observe(viewLifecycleOwner) { state ->
+            if (state == WorkerState.SUCCESS) {
                 Snackbar.make(binding.root, R.string.updated_libs, Snackbar.LENGTH_LONG).show()
-            } else if (state == WorkInfo.State.CANCELLED || state == WorkInfo.State.FAILED) {
+            } else if (state == WorkerState.FAILED) {
                 Snackbar.make(binding.root, R.string.update_failed, Snackbar.LENGTH_SHORT)
                     .setAction("Retry") {
                         viewModel.loadLibraries()

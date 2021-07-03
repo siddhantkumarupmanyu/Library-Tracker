@@ -4,8 +4,10 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
+import androidx.lifecycle.map
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
@@ -33,7 +35,15 @@ class TrackerViewModel @Inject constructor(
 
     private val workManager = WorkManager.getInstance(application)
 
-    val fetchWorkInfo = workManager.getWorkInfosByTagLiveData(FETCH_WORK_TAG)
+    private var workerRan = false
+
+    val fetchWorkerState = workManager.getWorkInfosByTagLiveData(FETCH_WORK_TAG).map { infos ->
+        if (workerRan) {
+            infos[0].state.workerState()
+        } else {
+            WorkerState.NOT_RAN
+        }
+    }
 
     init {
         // loadLibraries()
@@ -48,6 +58,7 @@ class TrackerViewModel @Inject constructor(
                     .addTag(FETCH_WORK_TAG)
                     .build()
             ).enqueue()
+        workerRan = true
     }
 
     companion object {
@@ -63,6 +74,7 @@ class TrackerViewModel @Inject constructor(
                 OneTimeWorkRequestBuilder<SpikeWorker>().build()
             ).enqueue()
     }
+
 
     // private fun loadLibraries() {
     //     viewModelScope.launch {
