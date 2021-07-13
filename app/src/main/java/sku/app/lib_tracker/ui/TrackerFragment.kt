@@ -55,49 +55,19 @@ class TrackerFragment : Fragment() {
             }
         }
 
-        viewModel.fetchWorkerState.observe(viewLifecycleOwner) { state ->
-            if (state == WorkerState.SUCCESS) {
-                Snackbar.make(binding.root, R.string.updated_libs, Snackbar.LENGTH_LONG).show()
-            } else if (state == WorkerState.FAILED) {
-                Snackbar.make(binding.root, R.string.update_failed, Snackbar.LENGTH_SHORT)
-                    .setAction("Retry") {
-                        viewModel.loadLibraries()
-                    }
-                    .show()
-            }
-        }
+        // TODO:
+        // viewModel.fetchWorkerState.observe(viewLifecycleOwner) { state ->
+        //     if (state == WorkerState.SUCCESS) {
+        //         Snackbar.make(binding.root, R.string.updated_libs, Snackbar.LENGTH_LONG).show()
+        //     } else if (state == WorkerState.FAILED) {
+        //         Snackbar.make(binding.root, R.string.update_failed, Snackbar.LENGTH_SHORT)
+        //             .setAction("Retry") {
+        //                 viewModel.loadLibraries()
+        //             }
+        //             .show()
+        //     }
+        // }
     }
-
-    private fun testList() = listOf(
-        Library(
-            "androidx.activity", listOf(
-                Artifact(
-                    "activity",
-                    Artifact.Version("1.0.1", "1.1.1-beta01"),
-                    "androidx.activity"
-                ),
-                Artifact(
-                    "activity-compose",
-                    Artifact.Version("1.0.1", "1.1.1-beta01"),
-                    "androidx.activity"
-                )
-            )
-        ),
-        Library(
-            "androidx.room", listOf(
-                Artifact(
-                    "room",
-                    Artifact.Version("1.0.1", "1.1.1-beta01"),
-                    "androidx.room"
-                ),
-                Artifact(
-                    "room-ktx",
-                    Artifact.Version("1.0.1", "1.1.1-beta01"),
-                    "androidx.room"
-                )
-            )
-        )
-    )
 
     override fun onDestroyView() {
         super.onDestroyView()

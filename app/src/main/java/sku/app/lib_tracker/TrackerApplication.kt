@@ -4,7 +4,7 @@ import android.app.Application
 import android.util.Log
 import androidx.work.Configuration
 import dagger.hilt.android.HiltAndroidApp
-import sku.app.lib_tracker.workers.TrackerWorkFactory
+import sku.app.lib_tracker.work.TrackerWorkFactory
 import javax.inject.Inject
 
 @HiltAndroidApp

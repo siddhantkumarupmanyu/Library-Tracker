@@ -2,10 +2,6 @@
 
 ======================================================
 
-who should be responsible for mapping or creating Library From the artifacts
-    - in my opinion repository should be responsible for this,
-    - dao should only know about artifact
-
 Add ApiResponse Class
 
 implement api requests to run in parallel

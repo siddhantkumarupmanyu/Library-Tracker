@@ -54,13 +54,9 @@ class TrackerRepositoryImplTest {
         repository.fetchAndSave()
 
         verify(apiService).getPackages()
-        verifyLibrary("activity")
-        verifyLibrary("room")
+        verifyGetLibrary("activity")
+        verifyGetLibrary("room")
         verify(trackerDao).insertArtifacts(listOf(activityArtifact, roomArtifact))
-    }
-
-    private suspend fun verifyLibrary(libraryName: String) {
-        verify(apiService).getLibrary("androidx/$libraryName")
     }
 
     @Test
@@ -137,6 +133,10 @@ class TrackerRepositoryImplTest {
 
     private fun assertLibraries(actual: List<Library>, vararg libraries: Library) {
         assertThat(actual, `is`(equalTo(libraries.toList())))
+    }
+
+    private suspend fun verifyGetLibrary(libraryName: String) {
+        verify(apiService).getLibrary("androidx/$libraryName")
     }
 
 }

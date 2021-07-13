@@ -1,4 +1,4 @@
-package sku.app.lib_tracker.workers
+package sku.app.lib_tracker.work
 
 import android.app.Notification
 import android.app.NotificationChannel

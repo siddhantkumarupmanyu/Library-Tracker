@@ -1,4 +1,4 @@
-package sku.app.lib_tracker.workers
+package sku.app.lib_tracker.work.fetch_worker
 
 import android.content.Context
 import androidx.work.ListenableWorker

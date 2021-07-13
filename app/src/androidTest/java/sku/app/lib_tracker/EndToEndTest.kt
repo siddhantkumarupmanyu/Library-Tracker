@@ -41,6 +41,8 @@ class EndToEndTest {
         mockWebServer.shutdown()
     }
 
+    // TODO: shouldn't I use in memory database here
+
     @Test
     fun simpleFetch() {
         enqueueResponse()

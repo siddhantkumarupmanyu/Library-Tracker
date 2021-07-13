@@ -1,4 +1,4 @@
-package sku.app.lib_tracker.workers
+package sku.app.lib_tracker.work
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
@@ -14,6 +14,7 @@ import org.junit.runner.RunWith
 import org.mockito.Mockito.verify
 import sku.app.lib_tracker.repository.TrackerRepository
 import sku.app.lib_tracker.utils.mock
+import sku.app.lib_tracker.work.fetch_worker.FetchWorker
 
 
 @RunWith(AndroidJUnit4::class)

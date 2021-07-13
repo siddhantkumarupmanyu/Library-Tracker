@@ -18,12 +18,12 @@ import org.junit.runner.RunWith
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.verify
 import sku.app.lib_tracker.R
-import sku.app.lib_tracker.di.RepositoryModule
+import sku.app.lib_tracker.di.AppModule
 import sku.app.lib_tracker.repository.TrackerRepository
 import sku.app.lib_tracker.utils.*
 
 @RunWith(AndroidJUnit4::class)
-@UninstallModules(RepositoryModule::class)
+@UninstallModules(AppModule::class)
 @HiltAndroidTest
 class TrackerFragmentTest {
 

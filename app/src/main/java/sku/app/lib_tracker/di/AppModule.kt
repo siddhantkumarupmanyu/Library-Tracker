@@ -14,11 +14,9 @@ import sku.app.lib_tracker.db.TrackerDao
 import sku.app.lib_tracker.db.TrackerDb
 import sku.app.lib_tracker.repository.TrackerRepository
 import sku.app.lib_tracker.repository.TrackerRepositoryImpl
+import sku.app.lib_tracker.work.TrackerWorkManager
+import sku.app.lib_tracker.work.TrackerWorkManagerImpl
 import javax.inject.Singleton
-
-class AppModule {
-}
-
 
 @InstallIn(SingletonComponent::class)
 @Module
@@ -39,11 +37,16 @@ object RetrofitModule {
 
 @InstallIn(SingletonComponent::class)
 @Module
-interface RepositoryModule {
+interface AppModule {
 
     @Singleton
     @Binds
     fun provideRepository(repository: TrackerRepositoryImpl): TrackerRepository
+
+    @Singleton
+    @Binds
+    fun provideTackerWorkManager(m: TrackerWorkManagerImpl): TrackerWorkManager
+
 }
 
 @InstallIn(SingletonComponent::class)

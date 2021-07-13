@@ -1,4 +1,4 @@
-package sku.app.lib_tracker.workers
+package sku.app.lib_tracker.work.fetch_worker
 
 import android.app.Notification
 import android.app.NotificationChannel
@@ -19,8 +19,7 @@ class FetchWorker(
     private val repository: TrackerRepository,
     appContext: Context,
     workerParams: WorkerParameters
-) :
-    CoroutineWorker(appContext, workerParams) {
+) : CoroutineWorker(appContext, workerParams) {
 
     private val notificationManager =
         appContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
