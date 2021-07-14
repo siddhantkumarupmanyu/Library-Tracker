@@ -1,12 +1,15 @@
 package sku.app.lib_tracker.work
 
 import android.content.Context
+import android.util.Log
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.work.Configuration
 import androidx.work.ListenableWorker
 import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
 import androidx.work.testing.TestListenableWorkerBuilder
+import androidx.work.testing.WorkManagerTestInitHelper
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
@@ -43,6 +46,14 @@ class FetchWorkerTest {
 
     @Before
     fun setUp() {
+
+        val config = Configuration.Builder()
+            .setMinimumLoggingLevel(Log.DEBUG)
+            .build()
+
+        // Initialize WorkManager for instrumentation tests.
+        WorkManagerTestInitHelper.initializeTestWorkManager(context, config)
+
         worker = TestListenableWorkerBuilder<FetchWorker>(context)
             .setWorkerFactory(factory)
             .build()
@@ -56,6 +67,8 @@ class FetchWorkerTest {
     }
 
     // TODO: add test for notification
-
+    // its not showing any notification definitely cannot test it here.
+    // may be in end to end tests
+    // https://proandroiddev.com/testing-android-notifications-f147a572b257
 
 }
