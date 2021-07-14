@@ -75,7 +75,7 @@ class TrackerViewModelTest {
     @Test
     fun runFetchWorker() {
         val observer = mock<Observer<WorkerState>>()
-        viewModel.runFetch()
+        viewModel.refresh()
 
         viewModel.fetchWorkerState.observeForever(observer)
 

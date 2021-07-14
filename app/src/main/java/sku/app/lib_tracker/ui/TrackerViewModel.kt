@@ -22,12 +22,13 @@ class TrackerViewModel @Inject constructor(
         }
     }
 
+    // TODO: remove this
     val fetchWorkerState = trackerWorkManager.getFetchWorkInfo()
 
     // (for now) fetchWorker runs only when forced to
-    // TODO: menu item for force fetch
 
-    fun runFetch() {
+    fun refresh(): LiveData<WorkerState> {
         trackerWorkManager.runFetchWorker()
+        return trackerWorkManager.getFetchWorkInfo()
     }
 }

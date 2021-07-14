@@ -1,9 +1,10 @@
 package sku.app.lib_tracker.ui
 
+import androidx.lifecycle.MutableLiveData
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
-import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -15,8 +16,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito.`when`
-import org.mockito.Mockito.verify
+import org.mockito.Mockito.*
 import sku.app.lib_tracker.R
 import sku.app.lib_tracker.di.AppModule
 import sku.app.lib_tracker.repository.TrackerRepository
@@ -31,6 +31,10 @@ class TrackerFragmentTest {
     @Rule
     @JvmField
     val executorRule = TaskExecutorWithIdlingResourceRule()
+
+    @Rule
+    @JvmField
+    val disableAnimation = DisableAnimationRule()
 
     @Rule
     @JvmField
@@ -65,7 +69,6 @@ class TrackerFragmentTest {
 
     @Test
     fun librariesAreLoaded(): Unit = runBlocking {
-
         onView(recyclerViewMatcher.atPosition(0))
             .check(matches(hasDescendant(withText("artifact0"))))
 
@@ -78,8 +81,43 @@ class TrackerFragmentTest {
         onView(recyclerViewMatcher.atPosition(1))
             .check(matches(hasDescendant(withText("1.2.3"))))
 
-        verify(repository).fetchAndSave()
         verify(repository).loadLibraries()
+    }
+
+    @Test
+    fun refreshLibrariesSuccess() = runBlocking {
+        val workerState = MutableLiveData(WorkerState.ENQUEUED)
+        `when`(trackerWorkManager.getFetchWorkInfo()).thenReturn(workerState)
+
+        onView(withId(R.id.refresh)).perform(click())
+
+        workerState.postValue(WorkerState.SUCCEEDED)
+
+        onView(withText(R.string.updated_libs)).check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
+
+        verify(trackerWorkManager).runFetchWorker()
+    }
+
+    @Test
+    fun refreshLibrariesFail_OnRetrySuccess() {
+        val workerState = MutableLiveData(WorkerState.ENQUEUED)
+        `when`(trackerWorkManager.getFetchWorkInfo()).thenReturn(workerState)
+
+        onView(withId(R.id.refresh)).perform(click())
+
+        workerState.postValue(WorkerState.FAILED)
+
+        onView(withText(R.string.update_failed)).check(matches(isDisplayed()))
+
+        workerState.postValue(WorkerState.SUCCEEDED)
+
+        Thread.sleep(100)
+
+        onView(withText("Retry")).perform(click())
+
+        onView(withText(R.string.updated_libs)).check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
+
+        verify(trackerWorkManager, times(2)).runFetchWorker()
     }
 
 }

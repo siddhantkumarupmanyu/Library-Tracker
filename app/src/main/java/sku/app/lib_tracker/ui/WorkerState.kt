@@ -8,7 +8,8 @@ enum class WorkerState {
     FAILED,
     NOT_RAN,
     RUNNING,
-    UNKNOWN_STATE
+    UNKNOWN_STATE;
+
 }
 
 fun WorkInfo.State.workerState(): WorkerState {
@@ -20,4 +21,9 @@ fun WorkInfo.State.workerState(): WorkerState {
         WorkInfo.State.RUNNING -> WorkerState.RUNNING
         else -> WorkerState.UNKNOWN_STATE
     }
+}
+
+fun WorkerState.isFinished(): Boolean {
+    return this == WorkerState.SUCCEEDED
+            || this == WorkerState.FAILED
 }

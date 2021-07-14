@@ -7,12 +7,11 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import sku.app.lib_tracker.R
 import sku.app.lib_tracker.databinding.TrackerFragmentBinding
-import sku.app.lib_tracker.vo.Artifact
-import sku.app.lib_tracker.vo.Library
 
 @AndroidEntryPoint
 class TrackerFragment : Fragment() {
@@ -38,6 +37,8 @@ class TrackerFragment : Fragment() {
             false
         )
 
+        setHasOptionsMenu(true)
+
         return binding.root
     }
 
@@ -45,6 +46,8 @@ class TrackerFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.lifecycleOwner = viewLifecycleOwner
+
+        setupMenu()
 
         adapter = LibraryAdapter()
         binding.listView.adapter = adapter
@@ -55,18 +58,41 @@ class TrackerFragment : Fragment() {
             }
         }
 
-        // TODO:
-        // viewModel.fetchWorkerState.observe(viewLifecycleOwner) { state ->
-        //     if (state == WorkerState.SUCCESS) {
-        //         Snackbar.make(binding.root, R.string.updated_libs, Snackbar.LENGTH_LONG).show()
-        //     } else if (state == WorkerState.FAILED) {
-        //         Snackbar.make(binding.root, R.string.update_failed, Snackbar.LENGTH_SHORT)
-        //             .setAction("Retry") {
-        //                 viewModel.loadLibraries()
-        //             }
-        //             .show()
-        //     }
-        // }
+    }
+
+    private fun setupMenu() {
+        binding.toolbar.inflateMenu(R.menu.menu_tracker)
+
+        binding.toolbar.setOnMenuItemClickListener {
+            if (it.itemId == R.id.refresh) {
+                refresh()
+                true
+            } else {
+                false
+            }
+        }
+    }
+
+    private fun refresh() {
+        val refresh = viewModel.refresh()
+
+        refresh.observe(viewLifecycleOwner, object : Observer<WorkerState> {
+            override fun onChanged(state: WorkerState) {
+                if (state.isFinished()) {
+                    refresh.removeObserver(this)
+                    if (state == WorkerState.SUCCEEDED) {
+                        Snackbar.make(binding.root, R.string.updated_libs, Snackbar.LENGTH_LONG)
+                            .show()
+                    } else if (state == WorkerState.FAILED) {
+                        Snackbar.make(binding.root, R.string.update_failed, Snackbar.LENGTH_SHORT)
+                            .setAction("Retry") {
+                                refresh()
+                            }
+                            .show()
+                    }
+                }
+            }
+        })
     }
 
     override fun onDestroyView() {
