@@ -3,7 +3,6 @@ package sku.app.lib_tracker.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
-import androidx.lifecycle.map
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import sku.app.lib_tracker.repository.TrackerRepository
@@ -23,21 +22,12 @@ class TrackerViewModel @Inject constructor(
         }
     }
 
-    private var workerRan = false
-
-    // TODO:
-    // val fetchWorkerState = trackerWorkManager.getFetchWorkInfo().map { infoState ->
-    //     if (workerRan) {
-    //         infoState.workerState()
-    //     } else {
-    //         WorkerState.NOT_RAN
-    //     }
-    // }
+    val fetchWorkerState = trackerWorkManager.getFetchWorkInfo()
 
     // (for now) fetchWorker runs only when forced to
+    // TODO: menu item for force fetch
 
     fun runFetch() {
         trackerWorkManager.runFetchWorker()
-        workerRan = true
     }
 }

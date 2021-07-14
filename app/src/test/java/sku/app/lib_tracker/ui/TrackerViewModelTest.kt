@@ -3,7 +3,6 @@ package sku.app.lib_tracker.ui
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import androidx.work.WorkInfo
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
@@ -44,7 +43,7 @@ class TrackerViewModelTest {
     private val activityLibrary = TestUtils.createLibrary("androidx.activity")
     private val roomLibrary = TestUtils.createLibrary("androidx.room")
 
-    private val workerInfoState = MutableLiveData(WorkInfo.State.ENQUEUED)
+    private val workerInfoState = MutableLiveData(WorkerState.NOT_RAN)
 
     @Before
     fun setup() {
@@ -52,6 +51,10 @@ class TrackerViewModelTest {
         manager = mock()
 
         `when`(manager.getFetchWorkInfo()).thenReturn(workerInfoState)
+
+        `when`(manager.runFetchWorker()).then {
+            workerInfoState.postValue(WorkerState.ENQUEUED)
+        }
 
         viewModel = TrackerViewModel(manager, repository)
     }
@@ -78,10 +81,10 @@ class TrackerViewModelTest {
 
         verify(observer).onChanged(WorkerState.ENQUEUED)
 
-        workerInfoState.postValue(WorkInfo.State.RUNNING)
+        workerInfoState.postValue(WorkerState.RUNNING)
         verify(observer).onChanged(WorkerState.RUNNING)
 
-        workerInfoState.postValue(WorkInfo.State.SUCCEEDED)
+        workerInfoState.postValue(WorkerState.SUCCEEDED)
         verify(observer).onChanged(WorkerState.SUCCEEDED)
 
         verify(manager).getFetchWorkInfo()
