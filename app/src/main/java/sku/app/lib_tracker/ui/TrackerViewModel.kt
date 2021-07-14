@@ -25,13 +25,14 @@ class TrackerViewModel @Inject constructor(
 
     private var workerRan = false
 
-    val fetchWorkerState = trackerWorkManager.getFetchWorkInfo().map { infoState ->
-        if (workerRan) {
-            infoState.workerState()
-        } else {
-            WorkerState.NOT_RAN
-        }
-    }
+    // TODO:
+    // val fetchWorkerState = trackerWorkManager.getFetchWorkInfo().map { infoState ->
+    //     if (workerRan) {
+    //         infoState.workerState()
+    //     } else {
+    //         WorkerState.NOT_RAN
+    //     }
+    // }
 
     // (for now) fetchWorker runs only when forced to
 

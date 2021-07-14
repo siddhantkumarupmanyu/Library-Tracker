@@ -1,53 +1,52 @@
 package sku.app.lib_tracker.work
 
+import android.app.Application
 import androidx.lifecycle.LiveData
-import androidx.work.WorkInfo
+import androidx.lifecycle.map
+import androidx.work.ExistingWorkPolicy
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import sku.app.lib_tracker.ui.WorkerState
+import sku.app.lib_tracker.ui.workerState
+import sku.app.lib_tracker.work.fetch_worker.FetchWorker
 import javax.inject.Inject
 
 
 // lack of better name
-class TrackerWorkManagerImpl @Inject constructor() : TrackerWorkManager {
+class TrackerWorkManagerImpl @Inject constructor(
+    private val application: Application
+) : TrackerWorkManager {
 
-    // private val workManager = WorkManager.getInstance(application)
+    private val workManager = WorkManager.getInstance(application)
 
+    private var enqueuedOnce: Boolean = false
 
-
-    // i could test these functions just have to see work docs once (again)
     override fun runFetchWorker() {
-        TODO("Not yet implemented")
-        // workManager
-        //     .beginUniqueWork(
-        //         UNIQUE_FETCH_WORK,
-        //         ExistingWorkPolicy.KEEP,
-        //         OneTimeWorkRequestBuilder<FetchWorker>()
-        //             .addTag(FETCH_WORK_TAG)
-        //             .build()
-        //     ).enqueue()
+        workManager
+            .beginUniqueWork(
+                UNIQUE_FETCH_WORK,
+                ExistingWorkPolicy.KEEP,
+                OneTimeWorkRequestBuilder<FetchWorker>()
+                    .addTag(FETCH_WORK_TAG)
+                    .build()
+            ).enqueue()
+        enqueuedOnce = true
     }
 
-    override fun getFetchWorkInfo(): LiveData<WorkInfo.State> {
-        TODO("Not yet implemented")
-        // val fetchWorkerState = workManager.getWorkInfosByTagLiveData(FETCH_WORK_TAG).map { infos ->
-        //     if (workerRan) {
-        //         infos[0].state.workerState()
-        //     } else {
-        //         WorkerState.NOT_RAN
-        //     }
-        // }
+    override fun getFetchWorkInfo(): LiveData<WorkerState> {
+        return workManager.getWorkInfosByTagLiveData(FETCH_WORK_TAG).map {
+            val state = if (enqueuedOnce) {
+                it[0].state.workerState()
+            } else {
+                WorkerState.NOT_RAN
+            }
+            state
+        }
     }
-    // fun runSpikeWorker() {
-    //     WorkManager.getInstance(application)
-    //         .beginUniqueWork(
-    //             "SpikeWork",
-    //             ExistingWorkPolicy.KEEP,
-    //             OneTimeWorkRequestBuilder<SpikeWorker>().build()
-    //         ).enqueue()
-    // }
-
 
     companion object {
-        private const val UNIQUE_FETCH_WORK = "Unique-Fetch-Work"
-        private const val FETCH_WORK_TAG = "fetch-work-tag"
+        const val UNIQUE_FETCH_WORK = "Unique-Fetch-Work"
+        const val FETCH_WORK_TAG = "fetch-work-tag"
     }
 
 }

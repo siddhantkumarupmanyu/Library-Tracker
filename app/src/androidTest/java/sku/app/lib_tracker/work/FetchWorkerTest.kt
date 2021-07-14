@@ -55,5 +55,7 @@ class FetchWorkerTest {
         verify(repository).fetchAndSave()
     }
 
+    // TODO: add test for notification
+
 
 }

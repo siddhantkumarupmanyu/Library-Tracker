@@ -21,6 +21,7 @@ import sku.app.lib_tracker.R
 import sku.app.lib_tracker.di.AppModule
 import sku.app.lib_tracker.repository.TrackerRepository
 import sku.app.lib_tracker.utils.*
+import sku.app.lib_tracker.work.TrackerWorkManager
 
 @RunWith(AndroidJUnit4::class)
 @UninstallModules(AppModule::class)
@@ -40,6 +41,9 @@ class TrackerFragmentTest {
 
     @BindValue
     val repository: TrackerRepository = mock()
+
+    @BindValue
+    val trackerWorkManager: TrackerWorkManager = mock()
 
     private val recyclerViewMatcher = RecyclerViewMatcher(R.id.list_view)
 
