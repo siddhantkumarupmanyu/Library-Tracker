@@ -15,7 +15,8 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.Mockito.*
+import org.mockito.Mockito.`when`
+import org.mockito.Mockito.verify
 import sku.app.lib_tracker.repository.TrackerRepository
 import sku.app.lib_tracker.utils.MainCoroutineRule
 import sku.app.lib_tracker.utils.TestUtils
@@ -75,9 +76,7 @@ class TrackerViewModelTest {
     @Test
     fun runFetchWorker() {
         val observer = mock<Observer<WorkerState>>()
-        viewModel.refresh()
-
-        viewModel.fetchWorkerState.observeForever(observer)
+        viewModel.refresh().observeForever(observer)
 
         verify(observer).onChanged(WorkerState.ENQUEUED)
 
@@ -89,17 +88,6 @@ class TrackerViewModelTest {
 
         verify(manager).getFetchWorkInfo()
         verify(manager).runFetchWorker()
-    }
-
-    @Test
-    fun workerNOT_RAN() {
-        val observer = mock<Observer<WorkerState>>()
-        viewModel.fetchWorkerState.observeForever(observer)
-
-        verify(observer).onChanged(WorkerState.NOT_RAN)
-
-        verify(manager).getFetchWorkInfo()
-        verify(manager, never()).runFetchWorker()
     }
 
     @ExperimentalCoroutinesApi
