@@ -137,13 +137,19 @@ class NotificationTest {
         uiDevice.wait(Until.hasObject(By.text(expectedAppName)), timeout)
 
         val cancelAction = uiDevice.findObject(By.text(getString(R.string.notification_cancel)))
-
         cancelAction.click()
 
         closeNotification()
 
-        onView(withText(R.string.retry))
-            .perform(click())
+        // onView(withText(R.string.retry))
+        //     .perform(click())
+
+        val retry = getString(R.string.retry).uppercase()
+
+        uiDevice.wait(Until.hasObject(By.text(retry)), timeout)
+
+        val retryAction = uiDevice.findObject(By.text(retry))
+        retryAction.click()
 
         uiDevice.openNotification()
 
