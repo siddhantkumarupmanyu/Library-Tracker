@@ -86,6 +86,9 @@ class TrackerWorkManagerImplTest {
         assertThat(info, `is`(WorkerState.NOT_RAN))
     }
 
+
+    // SPIKES
+
     @Test
     fun spikeTest() {
         val request = OneTimeWorkRequestBuilder<FakeWorker>()
@@ -141,6 +144,5 @@ class TrackerWorkManagerImplTest {
         }
 
     }
-
 
 }

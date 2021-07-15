@@ -16,3 +16,7 @@ class TrackerWorkFactory @Inject constructor(
     }
 
 }
+
+// ref:
+// https://medium.com/androiddevelopers/customizing-workmanager-fundamentals-fdaa17c46dd2
+// https://medium.com/androiddevelopers/customizing-workmanager-with-dagger-1029688c0978

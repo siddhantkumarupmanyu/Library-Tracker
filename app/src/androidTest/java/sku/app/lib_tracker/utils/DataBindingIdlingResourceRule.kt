@@ -17,7 +17,8 @@
 package sku.app.lib_tracker.utils
 
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.testing.FragmentScenario
+import androidx.fragment.app.FragmentActivity
+import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.IdlingRegistry
 import org.junit.rules.TestWatcher
 import org.junit.runner.Description
@@ -27,9 +28,13 @@ import org.junit.runner.Description
  */
 class DataBindingIdlingResourceRule() : TestWatcher() {
     private val idlingResource = DataBindingIdlingResource()
-    
+
     fun monitorFragment(fragment: Fragment) {
         idlingResource.monitorFragment(fragment)
+    }
+
+    fun <T : FragmentActivity> monitorActivity(activityScenario: ActivityScenario<T>) {
+        idlingResource.monitorActivity(activityScenario)
     }
 
     override fun finished(description: Description?) {

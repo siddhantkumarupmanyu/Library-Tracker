@@ -1,7 +1,6 @@
 package sku.app.lib_tracker
 
 import android.app.Application
-import android.util.Log
 import androidx.work.Configuration
 import dagger.hilt.android.HiltAndroidApp
 import sku.app.lib_tracker.work.TrackerWorkFactory
@@ -13,11 +12,11 @@ class TrackerApplication : Application(), Configuration.Provider {
     @Inject
     lateinit var trackerWorkFactory: TrackerWorkFactory
 
+    @Inject
+    lateinit var workConfiguration: Configuration
+
     override fun getWorkManagerConfiguration(): Configuration {
-        return Configuration.Builder()
-            .setMinimumLoggingLevel(Log.DEBUG)
-            .setWorkerFactory(trackerWorkFactory)
-            .build()
+        return workConfiguration
     }
 
 }
