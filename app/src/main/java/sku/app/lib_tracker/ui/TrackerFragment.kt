@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.work.ListenableWorker.Result.retry
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import sku.app.lib_tracker.R
@@ -85,7 +86,7 @@ class TrackerFragment : Fragment() {
                             .show()
                     } else if (state == WorkerState.FAILED) {
                         Snackbar.make(binding.root, R.string.update_failed, Snackbar.LENGTH_SHORT)
-                            .setAction("Retry") {
+                            .setAction(getString(R.string.retry)) {
                                 refresh()
                             }
                             .show()

@@ -9,4 +9,5 @@
     <string name="updated_libs">Updated Data</string>
     <string name="update_failed">Update Failed</string>
     <string name="refresh">Refresh</string>
+    <string name="retry">Retry</string>
 </resources>

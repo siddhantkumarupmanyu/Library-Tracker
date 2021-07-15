@@ -113,7 +113,7 @@ class TrackerFragmentTest {
 
         Thread.sleep(100)
 
-        onView(withText("Retry")).perform(click())
+        onView(withText(R.string.retry)).perform(click())
 
         onView(withText(R.string.updated_libs)).check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
 
