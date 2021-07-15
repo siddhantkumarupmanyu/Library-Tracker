@@ -66,9 +66,4 @@ class FetchWorkerTest {
         verify(repository).fetchAndSave()
     }
 
-    // TODO: add test for notification
-    // its not showing any notification definitely cannot test it here.
-    // may be in end to end tests
-    // https://proandroiddev.com/testing-android-notifications-f147a572b257
-
 }

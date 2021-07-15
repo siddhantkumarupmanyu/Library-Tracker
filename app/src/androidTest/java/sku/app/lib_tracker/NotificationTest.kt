@@ -189,3 +189,5 @@ class NotificationTest {
 // workInfo failed.
 // So I think it should be here only in end to end test
 
+// ref
+// https://proandroiddev.com/testing-android-notifications-f147a572b257
