@@ -6,9 +6,9 @@ import android.util.Log
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.core.app.ApplicationProvider
 import androidx.work.*
-import androidx.work.testing.SynchronousExecutor
 import androidx.work.testing.WorkManagerTestInitHelper
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
@@ -54,7 +54,7 @@ class TrackerWorkManagerImplTest {
     fun setup() {
         val config = Configuration.Builder()
             .setMinimumLoggingLevel(Log.DEBUG)
-            .setExecutor(SynchronousExecutor())
+            // .setExecutor(SynchronousExecutor())
             .setWorkerFactory(factory)
             .build()
 
@@ -65,19 +65,23 @@ class TrackerWorkManagerImplTest {
     }
 
     @Test
-    fun fetchWorkIsUnique() {
+    fun fetchWorkIsUnique() = runBlocking {
         val workManager = WorkManager.getInstance(context)
 
         trackerWorkManager.runFetchWorker()
+        trackerWorkManager.runFetchWorker()
+        trackerWorkManager.runFetchWorker()
 
+        // testing if we always have only one work (ExistingWorkPolicy.KEEP)
         val worksInfo = workManager.getWorkInfosForUniqueWork(UNIQUE_FETCH_WORK).get()
         assertThat(worksInfo.size, `is`(1))
 
-        val info = trackerWorkManager.getFetchWorkInfo().getOrAwaitValue()
-        assertThat(info, `is`(WorkerState.RUNNING))
-    }
+        // making sure work is in SUCCEEDED state when we assert it
+        delay(50)
 
-    // IDK how to test ExistingWorkPolicy.KEEP
+        val info = trackerWorkManager.getFetchWorkInfo().getOrAwaitValue()
+        assertThat(info, `is`(WorkerState.SUCCEEDED))
+    }
 
     @Test
     fun workIsNotRanAtLeastOnce() {
