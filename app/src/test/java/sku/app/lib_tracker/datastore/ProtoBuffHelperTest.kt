@@ -17,7 +17,7 @@ import sku.app.lib_tracker.vo.CustomDate
 import java.io.File
 import java.time.Month
 
-class PreferencesHelperTest {
+class ProtoBuffHelperTest {
 
     @Rule
     @JvmField
@@ -27,7 +27,7 @@ class PreferencesHelperTest {
 
     private lateinit var dataStore: DataStore<TrackerPreferences>
 
-    private lateinit var helper: PreferencesHelper
+    private lateinit var helper: ProtoBuffHelper
 
     @Before
     fun setup() {
@@ -37,7 +37,7 @@ class PreferencesHelperTest {
             scope = dataStoreScope
         )
 
-        helper = PreferencesHelper(dataStore)
+        helper = ProtoBuffHelper(dataStore)
     }
 
     @After

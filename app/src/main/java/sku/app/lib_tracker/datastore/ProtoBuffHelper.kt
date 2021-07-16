@@ -6,13 +6,12 @@ import sku.app.lib_tracker.vo.CustomDate
 
 const val DATA_STORE_FILE_NAME = "tracker_prefs.pb"
 
-// lack of better name
-class PreferencesHelper(private val dataStore: DataStore<TrackerPreferences>) {
+class ProtoBuffHelper(private val dataStore: DataStore<TrackerPreferences>) : DataStoreHelper {
 
     /**
      * @param date takes today's date as default
      */
-    suspend fun shouldFetch(date: CustomDate = CustomDate()): Boolean {
+    override suspend fun shouldFetch(date: CustomDate): Boolean {
         return date > getLastFetchDate()
     }
 
@@ -20,7 +19,7 @@ class PreferencesHelper(private val dataStore: DataStore<TrackerPreferences>) {
      * @return lastFetchDate from datastore, if not found defaults to CustomDate().yesterday
      * @see TrackerPrefsSerializer.defaultValue
      */
-    suspend fun getLastFetchDate(): CustomDate {
+    override suspend fun getLastFetchDate(): CustomDate {
         val dateString = dataStore.data.first().lastFetchDate
         return CustomDate.parse(dateString)
     }
@@ -28,7 +27,7 @@ class PreferencesHelper(private val dataStore: DataStore<TrackerPreferences>) {
     /**
      * @param date takes today's date as default
      */
-    suspend fun saveLastFetchDate(date: CustomDate = CustomDate()) {
+    override suspend fun saveLastFetchDate(date: CustomDate) {
         dataStore.updateData { prefs: TrackerPreferences ->
             prefs.toBuilder()
                 .setLastFetchDate(date.toString())
@@ -36,11 +35,11 @@ class PreferencesHelper(private val dataStore: DataStore<TrackerPreferences>) {
         }
     }
 
-    suspend fun showNotification(): Boolean {
+    override suspend fun showNotification(): Boolean {
         return dataStore.data.first().showNotification
     }
 
-    suspend fun setShowNotification(show: Boolean) {
+    override suspend fun setShowNotification(show: Boolean) {
         dataStore.updateData { prefs: TrackerPreferences ->
             prefs.toBuilder()
                 .setShowNotification(show)
