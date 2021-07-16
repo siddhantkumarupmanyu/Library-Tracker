@@ -15,8 +15,8 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.Mockito.`when`
-import org.mockito.Mockito.verify
+import org.mockito.Mockito.*
+import sku.app.lib_tracker.datastore.DataStoreHelper
 import sku.app.lib_tracker.repository.TrackerRepository
 import sku.app.lib_tracker.test_utils.MainCoroutineRule
 import sku.app.lib_tracker.test_utils.TestUtils
@@ -36,8 +36,8 @@ class TrackerViewModelTest {
     var mainCoroutineRule = MainCoroutineRule()
 
     private lateinit var repository: TrackerRepository
-
     private lateinit var manager: TrackerWorkManager
+    private lateinit var helper: DataStoreHelper
 
     private lateinit var viewModel: TrackerViewModel
 
@@ -47,9 +47,10 @@ class TrackerViewModelTest {
     private val workerInfoState = MutableLiveData(WorkerState.NOT_RAN)
 
     @Before
-    fun setup() {
+    fun setup() = runBlocking {
         repository = mock()
         manager = mock()
+        helper = mock()
 
         `when`(manager.getFetchWorkInfo()).thenReturn(workerInfoState)
 
@@ -57,7 +58,9 @@ class TrackerViewModelTest {
             workerInfoState.postValue(WorkerState.ENQUEUED)
         }
 
-        viewModel = TrackerViewModel(manager, repository)
+        `when`(helper.shouldFetch()).thenReturn(false)
+
+        viewModel = TrackerViewModel(manager, repository, helper)
     }
 
     @Test
@@ -71,23 +74,6 @@ class TrackerViewModelTest {
         )
 
         verify(repository).loadLibraries()
-    }
-
-    @Test
-    fun runFetchWorker() {
-        val observer = mock<Observer<WorkerState>>()
-        viewModel.refresh().observeForever(observer)
-
-        verify(observer).onChanged(WorkerState.ENQUEUED)
-
-        workerInfoState.postValue(WorkerState.RUNNING)
-        verify(observer).onChanged(WorkerState.RUNNING)
-
-        workerInfoState.postValue(WorkerState.SUCCEEDED)
-        verify(observer).onChanged(WorkerState.SUCCEEDED)
-
-        verify(manager).getFetchWorkInfo()
-        verify(manager).runFetchWorker()
     }
 
     @ExperimentalCoroutinesApi
@@ -121,6 +107,38 @@ class TrackerViewModelTest {
 
         verify(observer).onChanged(listOf(updateActivityLib, updateRoomLib))
         verify(repository).loadLibraries()
+    }
+
+    @Test
+    fun runFetchWorkerOnRefresh() {
+        val observer = mock<Observer<WorkerState>>()
+        viewModel.refresh().observeForever(observer)
+
+        verify(observer).onChanged(WorkerState.ENQUEUED)
+
+        workerInfoState.postValue(WorkerState.RUNNING)
+        verify(observer).onChanged(WorkerState.RUNNING)
+
+        workerInfoState.postValue(WorkerState.SUCCEEDED)
+        verify(observer).onChanged(WorkerState.SUCCEEDED)
+
+        verify(manager).getFetchWorkInfo()
+        verify(manager).runFetchWorker()
+    }
+
+    // shouldFetch = false already being tested in refresh
+    @Test
+    fun runFetchWorkerWhenHelperReturnsTrue(): Unit = runBlocking {
+        reset(manager)
+        reset(repository)
+        reset(helper)
+
+        `when`(helper.shouldFetch()).thenReturn(true)
+
+        val viewModel = TrackerViewModel(manager, repository, helper)
+
+        verify(helper).shouldFetch()
+        verify(manager).runFetchWorker()
     }
 
 }
