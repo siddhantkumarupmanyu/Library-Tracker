@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package sku.app.lib_tracker.utils
+package sku.app.lib_tracker.test_utils
 
 import android.content.ComponentName
 import android.content.Intent

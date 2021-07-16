@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package sku.app.lib_tracker.utils
+package sku.app.lib_tracker.test_utils
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers

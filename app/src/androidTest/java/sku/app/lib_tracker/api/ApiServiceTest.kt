@@ -10,7 +10,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import retrofit2.Retrofit
-import sku.app.lib_tracker.utils.enqueueResponse
+import sku.app.lib_tracker.test_utils.enqueueResponse
 import sku.app.lib_tracker.vo.Artifact.Version
 import sku.app.lib_tracker.vo.Package
 import java.util.concurrent.TimeUnit

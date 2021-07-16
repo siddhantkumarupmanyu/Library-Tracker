@@ -2,7 +2,7 @@ package sku.app.lib_tracker.db
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import sku.app.lib_tracker.utils.MainCoroutineRule
+import sku.app.lib_tracker.test_utils.MainCoroutineRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runBlockingTest
@@ -11,7 +11,7 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import sku.app.lib_tracker.utils.TestUtils
+import sku.app.lib_tracker.test_utils.TestUtils
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)

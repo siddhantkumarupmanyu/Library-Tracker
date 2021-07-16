@@ -16,7 +16,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito.verify
 import sku.app.lib_tracker.repository.TrackerRepository
-import sku.app.lib_tracker.utils.mock
+import sku.app.lib_tracker.test_utils.mock
 import sku.app.lib_tracker.work.fetch_worker.FetchWorker
 
 

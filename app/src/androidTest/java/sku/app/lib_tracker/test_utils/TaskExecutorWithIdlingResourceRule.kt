@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package sku.app.lib_tracker.utils
+package sku.app.lib_tracker.test_utils
 
 import androidx.arch.core.executor.testing.CountingTaskExecutorRule
 import androidx.test.espresso.IdlingRegistry

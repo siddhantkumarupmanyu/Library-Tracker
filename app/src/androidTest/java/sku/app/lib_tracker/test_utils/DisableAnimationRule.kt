@@ -1,4 +1,4 @@
-package sku.app.lib_tracker.utils
+package sku.app.lib_tracker.test_utils
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice

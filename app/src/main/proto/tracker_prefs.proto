@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+option java_package = "sku.app.lib_tracker.datastore";
+option java_multiple_files = true;
+
+message TrackerPreferences{
+  string lastFetchDate = 1;
+  bool showNotification = 2;
+}

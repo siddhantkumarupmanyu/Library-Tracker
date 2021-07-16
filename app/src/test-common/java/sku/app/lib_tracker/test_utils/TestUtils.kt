@@ -1,4 +1,4 @@
-package sku.app.lib_tracker.utils
+package sku.app.lib_tracker.test_utils
 
 import sku.app.lib_tracker.vo.Artifact
 import sku.app.lib_tracker.vo.Library

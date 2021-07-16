@@ -24,10 +24,10 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import sku.app.lib_tracker.utils.DisableAnimationRule
-import sku.app.lib_tracker.utils.OkHttp3IdlingResource
-import sku.app.lib_tracker.utils.RecyclerViewMatcher
-import sku.app.lib_tracker.utils.enqueueResponse
+import sku.app.lib_tracker.test_utils.DisableAnimationRule
+import sku.app.lib_tracker.test_utils.OkHttp3IdlingResource
+import sku.app.lib_tracker.test_utils.RecyclerViewMatcher
+import sku.app.lib_tracker.test_utils.enqueueResponse
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -74,6 +74,29 @@ class EndToEndTest {
     }
 
     @Test
+    fun fetchOnOpeningForFirstTimeInADay() {
+        // TODO:
+
+        // enqueueResponse()
+        //
+        // val activityScenario = ActivityScenario.launch(MainActivity::class.java)
+        //
+        // assertRequestsAreMade()
+        //
+        // activityScenario.close()
+        //
+        //
+        // val activityScenario2 = ActivityScenario.launch(MainActivity::class.java)
+        //
+        // assertRequestsAreNotMade()
+        //
+        // onView(listMatcher().atPosition(0)).check(matches(hasDescendant(withText("activity"))))
+        // onView(listMatcher().atPosition(3)).check(matches(hasDescendant(withText("work-testing"))))
+        //
+        // activityScenario2.close()
+    }
+
+    @Test
     fun refresh() {
         enqueueResponse()
 
@@ -84,7 +107,7 @@ class EndToEndTest {
         assertRequestsAreMade()
 
         // test is flaky without this
-        Thread.sleep(32)
+        Thread.sleep(100)
 
         onView(listMatcher().atPosition(0)).check(matches(hasDescendant(withText("activity"))))
         onView(listMatcher().atPosition(3)).check(matches(hasDescendant(withText("work-testing"))))

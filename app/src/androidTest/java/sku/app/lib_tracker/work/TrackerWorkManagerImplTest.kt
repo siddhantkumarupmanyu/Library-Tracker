@@ -17,8 +17,8 @@ import org.junit.Rule
 import org.junit.Test
 import sku.app.lib_tracker.repository.TrackerRepository
 import sku.app.lib_tracker.ui.WorkerState
-import sku.app.lib_tracker.utils.getOrAwaitValue
-import sku.app.lib_tracker.utils.mock
+import sku.app.lib_tracker.test_utils.getOrAwaitValue
+import sku.app.lib_tracker.test_utils.mock
 import sku.app.lib_tracker.work.TrackerWorkManagerImpl.Companion.UNIQUE_FETCH_WORK
 import sku.app.lib_tracker.work.fetch_worker.FetchWorker
 import java.util.concurrent.TimeUnit

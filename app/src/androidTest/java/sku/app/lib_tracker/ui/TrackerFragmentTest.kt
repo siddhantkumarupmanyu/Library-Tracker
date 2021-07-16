@@ -20,7 +20,7 @@ import org.mockito.Mockito.*
 import sku.app.lib_tracker.R
 import sku.app.lib_tracker.di.AppModule
 import sku.app.lib_tracker.repository.TrackerRepository
-import sku.app.lib_tracker.utils.*
+import sku.app.lib_tracker.test_utils.*
 import sku.app.lib_tracker.work.TrackerWorkManager
 
 @RunWith(AndroidJUnit4::class)

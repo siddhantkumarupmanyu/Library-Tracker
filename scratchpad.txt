@@ -51,6 +51,11 @@ Errors:
 
 update date for a library is same as last modified header date in response of group-index
 
+
+========================================================================
+UI Enhancements (After Implementing all of the above functionality)
+ - swipe to refresh
+
 ========================================================================
 NOTES
 

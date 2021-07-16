@@ -29,7 +29,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import sku.app.lib_tracker.utils.DisableAnimationRule
+import sku.app.lib_tracker.test_utils.DisableAnimationRule
 import javax.inject.Inject
 
 @LargeTest

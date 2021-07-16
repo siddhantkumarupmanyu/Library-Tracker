@@ -1,4 +1,4 @@
-package sku.app.lib_tracker.utils
+package sku.app.lib_tracker.test_utils
 
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
