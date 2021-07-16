@@ -15,6 +15,7 @@ import androidx.work.testing.WorkManagerTestInitHelper
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import junit.framework.TestCase.fail
 import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.MockWebServer
 import org.hamcrest.CoreMatchers.`is`
@@ -24,6 +25,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import sku.app.lib_tracker.datastore.DATA_STORE_FILE_NAME
 import sku.app.lib_tracker.test_utils.DisableAnimationRule
 import sku.app.lib_tracker.test_utils.OkHttp3IdlingResource
 import sku.app.lib_tracker.test_utils.RecyclerViewMatcher
@@ -71,29 +73,28 @@ class EndToEndTest {
     @After
     fun stopServer() {
         mockWebServer.shutdown()
+
+        deleteDataStoreFiles()
     }
 
     @Test
     fun fetchOnOpeningForFirstTimeInADay() {
-        // TODO:
+        enqueueResponse()
 
-        // enqueueResponse()
-        //
-        // val activityScenario = ActivityScenario.launch(MainActivity::class.java)
-        //
-        // assertRequestsAreMade()
-        //
-        // activityScenario.close()
-        //
-        //
-        // val activityScenario2 = ActivityScenario.launch(MainActivity::class.java)
-        //
-        // assertRequestsAreNotMade()
-        //
-        // onView(listMatcher().atPosition(0)).check(matches(hasDescendant(withText("activity"))))
-        // onView(listMatcher().atPosition(3)).check(matches(hasDescendant(withText("work-testing"))))
-        //
-        // activityScenario2.close()
+        val activityScenario = ActivityScenario.launch(MainActivity::class.java)
+
+        assertRequestsAreMade()
+
+        activityScenario.close()
+
+        val activityScenario2 = ActivityScenario.launch(MainActivity::class.java)
+
+        assertRequestsAreNotMade()
+
+        onView(listMatcher().atPosition(0)).check(matches(hasDescendant(withText("activity"))))
+        onView(listMatcher().atPosition(3)).check(matches(hasDescendant(withText("work-testing"))))
+
+        activityScenario2.close()
     }
 
     @Test
@@ -115,6 +116,12 @@ class EndToEndTest {
         activityScenario.close()
     }
 
+    private fun deleteDataStoreFiles() {
+        val appContext = ApplicationProvider.getApplicationContext<Application>()
+
+        appContext.tempDataStoreFile(DATA_STORE_FILE_NAME).delete()
+    }
+
     private fun assertRequestsAreMade() {
         assertRequest("/master-index.xml")
 
@@ -123,6 +130,15 @@ class EndToEndTest {
         assertRequest(libraryRequest.format("fragment"))
         assertRequest(libraryRequest.format("viewpager2"))
         assertRequest(libraryRequest.format("work"))
+    }
+
+    private fun assertRequestsAreNotMade() {
+        try {
+            assertRequest("/master-index.xml")
+            fail("Should have throw exception")
+        } catch (e: Exception) {
+            // no op
+        }
     }
 
     private fun assertRequest(path: String) {
