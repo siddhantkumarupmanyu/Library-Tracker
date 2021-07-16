@@ -46,15 +46,6 @@ class PreferencesHelperTest {
     @Test
     @Ignore
     fun haveFetchedToday() {
-        createProtoFileWith()
-
-    }
-
-    private fun createProtoFileWith() {
-        // todo:
-        // dataStore.updateData { prefs: TrackerPreferences ->
-        //     prefs.toBuilder().setLastFetchDate()
-        // }
     }
 
     @Test

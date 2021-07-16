@@ -59,6 +59,8 @@ UI Enhancements (After Implementing all of the above functionality)
 ========================================================================
 NOTES
 
+just in case, vo stands for value object or value type
+
 https://stackoverflow.com/a/58659423
     - The reason he's saying we do not need Dispatchers.IO
     - https://medium.com/androiddevelopers/coroutines-on-android-part-i-getting-the-background-3e0e54d20bb
