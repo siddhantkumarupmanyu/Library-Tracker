@@ -1,21 +1,52 @@
 package sku.app.lib_tracker.datastore
 
 import androidx.datastore.core.DataStore
+import kotlinx.coroutines.flow.first
+import sku.app.lib_tracker.vo.CustomDate
 
 const val DATA_STORE_FILE_NAME = "tracker_prefs.pb"
 
 // lack of better name
-class PreferencesHelper(dataStore: DataStore<TrackerPreferences>) {
-    suspend fun haveFetchedToday(): Boolean {
-        return false
+class PreferencesHelper(private val dataStore: DataStore<TrackerPreferences>) {
+
+    /**
+     * @param date takes today's date as default
+     */
+    suspend fun shouldFetch(date: CustomDate = CustomDate()): Boolean {
+        return date > getLastFetchDate()
+    }
+
+    /**
+     * @return lastFetchDate from datastore, if not found defaults to CustomDate().yesterday
+     * @see TrackerPrefsSerializer.defaultValue
+     */
+    suspend fun getLastFetchDate(): CustomDate {
+        val dateString = dataStore.data.first().lastFetchDate
+        return CustomDate.parse(dateString)
+    }
+
+    /**
+     * @param date takes today's date as default
+     */
+    suspend fun saveLastFetchDate(date: CustomDate = CustomDate()) {
+        dataStore.updateData { prefs: TrackerPreferences ->
+            prefs.toBuilder()
+                .setLastFetchDate(date.toString())
+                .build()
+        }
+    }
+
+    suspend fun showNotification(): Boolean {
+        return dataStore.data.first().showNotification
+    }
+
+    suspend fun setShowNotification(show: Boolean) {
+        dataStore.updateData { prefs: TrackerPreferences ->
+            prefs.toBuilder()
+                .setShowNotification(show)
+                .build()
+        }
     }
 
 
 }
-
-// i tried to test this class a different way than dao class
-// I do not want DateUtils to implement a interface which we can mock
-// just for testing this class
-// it would be more oop style testing though
-// but unnecessary complexity in code.
-// right now we have a bit complexity in test but it's ok

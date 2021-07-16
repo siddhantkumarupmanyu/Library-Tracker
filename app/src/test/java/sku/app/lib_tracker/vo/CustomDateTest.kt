@@ -20,6 +20,23 @@ class CustomDateTest {
     }
 
     @Test
+    fun yesterday() {
+        val date = CustomDate(12, Month.JANUARY, 2021)
+        val yesterday = CustomDate(11, Month.JANUARY, 2021)
+
+        assertThat(date.yesterday, `is`(equalTo(yesterday)))
+    }
+
+    @Test
+    fun parse() {
+        val dateString = "2021-01-12"
+
+        val date = CustomDate(12, Month.JANUARY, 2021)
+
+        assertThat(CustomDate.parse(dateString), `is`(equalTo(date)))
+    }
+
+    @Test
     fun comparison() {
         val date1 = CustomDate(12, Month.JANUARY, 2021)
         val date2 = CustomDate(13, Month.JANUARY, 2021)

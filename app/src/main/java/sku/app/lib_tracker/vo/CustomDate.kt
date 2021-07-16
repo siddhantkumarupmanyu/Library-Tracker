@@ -10,7 +10,9 @@ import java.time.Month
 // so it may enable fetching two results in a single day
 class CustomDate private constructor(private val localDate: LocalDate) {
 
-
+    /**
+     * CustomDate with Today's Date
+     */
     constructor() : this(LocalDate.now())
 
     constructor(day: Int, month: Month, year: Int) : this(
@@ -21,6 +23,14 @@ class CustomDate private constructor(private val localDate: LocalDate) {
         )
     )
 
+    companion object {
+        fun parse(dateInString: String): CustomDate {
+            return CustomDate(LocalDate.parse(dateInString))
+        }
+    }
+
+    val yesterday: CustomDate
+        get() = CustomDate(localDate.minusDays(1))
 
     override fun toString(): String {
         return localDate.toString()
