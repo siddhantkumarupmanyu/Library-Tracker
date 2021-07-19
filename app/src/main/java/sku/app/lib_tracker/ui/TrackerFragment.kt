@@ -77,7 +77,7 @@ class TrackerFragment : Fragment() {
     private fun refresh() {
         val refresh = viewModel.refresh()
 
-        // todo: should observe snackbarEventLiveData
+        // todo: should observe events and use is act accordingly
 
 //        refresh.observe(viewLifecycleOwner, object : Observer<WorkerState> {
 //            override fun onChanged(state: WorkerState) {

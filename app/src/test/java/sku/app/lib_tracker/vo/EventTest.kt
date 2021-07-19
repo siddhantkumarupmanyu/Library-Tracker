@@ -24,7 +24,7 @@ class EventTest {
 
         assertThat(eventLiveData.getEventValue(), `is`("event"))
 
-        // TODO: fix this
+        // fix this
         // bottleneck; it always waits for 100 secs before continuing
         assertThat(
             eventLiveData.getEventValue(timeout = 100, timeUnit = TimeUnit.MILLISECONDS),

@@ -30,9 +30,7 @@ class FetchWorker(
 
         repository.fetchAndSave()
 
-        // TODO: show  notification when showNotification is enabled
-        // can use workData to distinguish between different types of work
-        // like is it periodic or refresh or startOfTheApp
+        // TODO: show  notification only when showNotification is enabled
 
         return Result.success()
     }

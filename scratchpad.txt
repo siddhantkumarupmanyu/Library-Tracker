@@ -33,6 +33,7 @@ Feature 2: user should have ability to enable fetching in background
 
 From what I see we are going to need to use shared-pref
     - in that case We should use datastore
+    - using
 
 Data Store keys:
     - lastFetch: stores current day
@@ -42,11 +43,10 @@ Comparing Versions of Artifacts
     - Will enable us implement feature 1
 
 
-Feature 4: ability to force fetch
-
 Errors:
     - Show error on app opening if network is not available
     - error when parsing goes wrong or fetching goes wrong
+        - should start from repository
 
 
 update date for a library is same as last modified header date in response of group-index
