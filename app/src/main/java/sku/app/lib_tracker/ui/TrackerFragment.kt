@@ -77,23 +77,25 @@ class TrackerFragment : Fragment() {
     private fun refresh() {
         val refresh = viewModel.refresh()
 
-        refresh.observe(viewLifecycleOwner, object : Observer<WorkerState> {
-            override fun onChanged(state: WorkerState) {
-                if (state.isFinished()) {
-                    refresh.removeObserver(this)
-                    if (state == WorkerState.SUCCEEDED) {
-                        Snackbar.make(binding.root, R.string.updated_libs, Snackbar.LENGTH_LONG)
-                            .show()
-                    } else if (state == WorkerState.FAILED) {
-                        Snackbar.make(binding.root, R.string.update_failed, Snackbar.LENGTH_SHORT)
-                            .setAction(getString(R.string.retry)) {
-                                refresh()
-                            }
-                            .show()
-                    }
-                }
-            }
-        })
+        // todo: should observe snackbarEventLiveData
+
+//        refresh.observe(viewLifecycleOwner, object : Observer<WorkerState> {
+//            override fun onChanged(state: WorkerState) {
+//                if (state.isFinished()) {
+//                    refresh.removeObserver(this)
+//                    if (state == WorkerState.SUCCEEDED) {
+//                        Snackbar.make(binding.root, R.string.updated_libs, Snackbar.LENGTH_LONG)
+//                            .show()
+//                    } else if (state == WorkerState.FAILED) {
+//                        Snackbar.make(binding.root, R.string.update_failed, Snackbar.LENGTH_SHORT)
+//                            .setAction(getString(R.string.retry)) {
+//                                refresh()
+//                            }
+//                            .show()
+//                    }
+//                }
+//            }
+//        })
     }
 
     override fun onDestroyView() {

@@ -20,39 +20,59 @@ class EventTest {
     @Test
     fun oneEventCanBeObservedOnlyOnce() {
         val event = Event("event")
-        val eventLiveDate = MutableLiveData(event)
+        val eventLiveData = MutableLiveData(event)
 
-        assertThat(getEventValue(eventLiveDate), `is`("event"))
+        assertThat(eventLiveData.getEventValue(), `is`("event"))
 
         // TODO: fix this
-        // bottleneck; it always waits for 2 secs before continuing
-        assertThat(getEventValue(eventLiveDate), `is`(nullValue()))
+        // bottleneck; it always waits for 100 secs before continuing
+        assertThat(
+            eventLiveData.getEventValue(timeout = 100, timeUnit = TimeUnit.MILLISECONDS),
+            `is`(nullValue())
+        )
     }
 
     @Test
     fun newEvent() {
         val event1 = Event("event1")
         val event2 = Event("event2")
-        val eventLiveDate = MutableLiveData(event1)
+        val eventLiveData = MutableLiveData(event1)
 
-        assertThat(getEventValue(eventLiveDate), `is`("event1"))
+        assertThat(eventLiveData.getEventValue(), `is`("event1"))
 
-        eventLiveDate.postValue(event2)
+        eventLiveData.postValue(event2)
 
-        assertThat(getEventValue(eventLiveDate), `is`("event2"))
+        assertThat(eventLiveData.getEventValue(), `is`("event2"))
     }
 
-    private fun <T> getEventValue(eventLiveData: LiveData<Event<T>>): T? {
-        var content: T? = null
-        val latch = CountDownLatch(1)
-        val eventObserver = EventObserver<T> {
-            content = it
-            latch.countDown()
-        }
-        eventLiveData.observeForever(eventObserver)
-        latch.await(2, TimeUnit.SECONDS)
-        eventLiveData.removeObserver(eventObserver)
-        return content
+    @Test
+    fun differentTypeOfEvents() {
+        val event1 = Event("string")
+        val event2 = Event(2)
+
+        val eventLiveData = MutableLiveData<Event<Any>>()
+
+        eventLiveData.postValue(event1)
+        assertThat(eventLiveData.getEventValue(), `is`("string"))
+
+        eventLiveData.postValue(event2)
+        assertThat(eventLiveData.getEventValue(), `is`(2))
     }
 
+}
+
+fun <T> LiveData<Event<T>>.getEventValue(
+    timeout: Long = 2,
+    timeUnit: TimeUnit = TimeUnit.SECONDS
+): T? {
+    var content: T? = null
+    val latch = CountDownLatch(1)
+    val eventObserver = EventObserver<T> {
+        content = it
+        latch.countDown()
+    }
+    this.observeForever(eventObserver)
+    latch.await(timeout, timeUnit)
+    this.removeObserver(eventObserver)
+    return content
 }
