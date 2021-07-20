@@ -8,12 +8,10 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import dagger.hilt.testing.TestInstallIn
+import kotlinx.coroutines.CoroutineScope
 import sku.app.lib_tracker.datastore.*
-import sku.app.lib_tracker.di.DataStoreModule
 import java.io.File
 import javax.inject.Singleton
-
 
 
 //@TestInstallIn(
@@ -27,10 +25,14 @@ object TestDataStoreModule {
 
     @Singleton
     @Provides
-    fun providedDataStore(app: Application): DataStore<TrackerPreferences> {
+    fun providedDataStore(
+        app: Application,
+        scope: TestDataStoreScope
+    ): DataStore<TrackerPreferences> {
         return DataStoreFactory.create(
             serializer = TrackerPrefsSerializer,
-            produceFile = { app.tempDataStoreFile(DATA_STORE_FILE_NAME) }
+            produceFile = { app.tempDataStoreFile(DATA_STORE_FILE_NAME) },
+            scope = scope.scope
         )
     }
 
@@ -44,3 +46,5 @@ object TestDataStoreModule {
 
 fun Context.tempDataStoreFile(fileName: String): File =
     File(applicationContext.filesDir, "tempdatastore/$fileName")
+
+data class TestDataStoreScope(val scope: CoroutineScope)

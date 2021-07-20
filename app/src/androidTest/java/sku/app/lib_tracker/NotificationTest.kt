@@ -20,6 +20,10 @@ import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.MockWebServer
 import org.hamcrest.CoreMatchers.`is`
@@ -54,6 +58,9 @@ class NotificationTest {
     @BindValue
     val okHttpClient = OkHttpClient()
 
+    @BindValue
+    val dataStoreScope = TestDataStoreScope(CoroutineScope(Dispatchers.IO + SupervisorJob()))
+
     @Inject
     lateinit var workConfiguration: Configuration
 
@@ -83,6 +90,8 @@ class NotificationTest {
     @After
     fun teardown() {
         scenerio.close()
+
+        dataStoreScope.scope.cancel()
     }
 
     @After
@@ -105,7 +114,7 @@ class NotificationTest {
 
         assertThat(title.text, `is`(equalTo(expectedTitle)))
 
-        closeNotification()
+        closeNotificationIfApplicable()
     }
 
     @Test
@@ -122,7 +131,7 @@ class NotificationTest {
 
         cancelAction.click()
 
-        closeNotification()
+        closeNotificationIfApplicable()
 
         onView(withText(R.string.update_failed))
             .check(matches(isDisplayed()))
@@ -142,7 +151,7 @@ class NotificationTest {
         val cancelAction = uiDevice.findObject(By.text(getString(R.string.notification_cancel)))
         cancelAction.click()
 
-        closeNotification()
+        closeNotificationIfApplicable()
 
         // onView(withText(R.string.retry))
         //     .perform(click())
@@ -162,7 +171,7 @@ class NotificationTest {
 
         assertThat(title.text, `is`(equalTo(getString(R.string.notification_title))))
 
-        closeNotification()
+        closeNotificationIfApplicable()
     }
 
     private fun getString(@StringRes id: Int): String {
@@ -170,8 +179,11 @@ class NotificationTest {
     }
 
 
-    private fun closeNotification() {
-        uiDevice.pressBack()
+    private fun closeNotificationIfApplicable() {
+        // android will automatically closes notifications, if there are not notifications
+        if (uiDevice.findObject(By.res("com.android.systemui:id/notification_stack_scroller")) != null) {
+            uiDevice.pressBack()
+        }
     }
 
 }
