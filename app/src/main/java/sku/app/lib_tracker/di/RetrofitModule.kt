@@ -17,7 +17,8 @@ object RetrofitModule {
     @Provides
     fun providesApiService(): ApiService {
         return Retrofit.Builder()
-            .baseUrl("https://maven.google.com/")
+//            .baseUrl("https://maven.google.com/") // this redirects to below url
+            .baseUrl("https://dl.google.com/dl/android/maven2/")
             .addConverterFactory(CustomConverterFactory())
             // .addCallAdapterFactory(LiveDataCallAdapterFactory())
             .build()
