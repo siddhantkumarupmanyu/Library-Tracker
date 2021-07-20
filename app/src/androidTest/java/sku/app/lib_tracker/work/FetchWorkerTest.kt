@@ -11,10 +11,12 @@ import androidx.work.WorkerParameters
 import androidx.work.testing.TestListenableWorkerBuilder
 import androidx.work.testing.WorkManagerTestInitHelper
 import kotlinx.coroutines.runBlocking
+import org.hamcrest.CoreMatchers.`is`
+import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito.verify
+import org.mockito.Mockito.*
 import sku.app.lib_tracker.datastore.DataStoreHelper
 import sku.app.lib_tracker.repository.TrackerRepository
 import sku.app.lib_tracker.test_utils.mock
@@ -70,6 +72,16 @@ class FetchWorkerTest {
         verify(helper).saveLastFetchDate()
     }
 
-    // add error cases
+    @Test
+    fun returnResultFailureInCaseOfAnyException(): Unit = runBlocking {
+        `when`(repository.fetchAndSave()).thenThrow(RuntimeException("unable to complete the request"))
+
+        val result = worker.doWork()
+
+        assertThat(result, `is`(ListenableWorker.Result.failure()))
+
+        verify(repository).fetchAndSave()
+        verifyNoInteractions(helper)
+    }
 
 }

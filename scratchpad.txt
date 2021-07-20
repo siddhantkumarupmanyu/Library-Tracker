@@ -1,5 +1,3 @@
-
-
 ======================================================
 
 implement api requests to run in parallel
@@ -19,8 +17,6 @@ Feature 0: run work whenever user opens the app. (by default)
     - should consider the case when user opens it multiple times in a day.
         - in that case we should only fetch it one time; on first opening
     - user can force fetch though
-    - Error Handling
-        - doing
 
 Feature 1: Ability to Bookmark Libraries
     - only show diff between bookmarked libraries
@@ -42,20 +38,18 @@ Data Store keys:
 Comparing Versions of Artifacts
     - Will enable us implement feature 1
 
-
-Error Handling:
-    - Show error(snackbar saying no network) on app opening if network is not available
-    - error when parsing goes wrong or fetching goes wrong
-        - should start from repository
-    - Add ApiResponse Class (valuable for error handling)
-
-
 update date for a library is same as last modified header date in response of group-index
 
 
 ========================================================================
 UI Enhancements (After Implementing all of the above functionality)
  - swipe to refresh
+
+Error Handling:
+    - currently it only presents a snackbar saying update failed with retry button
+    - Show error(snackbar saying no network) on app opening if network is not available
+    - error when parsing goes wrong or fetching goes wrong
+
 
 ========================================================================
 NOTES

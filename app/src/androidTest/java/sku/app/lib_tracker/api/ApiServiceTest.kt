@@ -2,17 +2,22 @@ package sku.app.lib_tracker.api
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import kotlinx.coroutines.runBlocking
+import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.After
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
+import retrofit2.HttpException
 import retrofit2.Retrofit
 import sku.app.lib_tracker.test_utils.enqueueResponse
 import sku.app.lib_tracker.vo.Artifact.Version
 import sku.app.lib_tracker.vo.Package
+import java.net.ConnectException
+import java.net.SocketTimeoutException
 import java.util.concurrent.TimeUnit
 
 @RunWith(AndroidJUnit4::class)
@@ -72,5 +77,33 @@ class ApiServiceTest {
         assertThat(activityArtifact.name, `is`("activity"))
         assertThat(activityArtifact.version, `is`(Version("1.2.3", "1.3.0-beta02")))
         assertThat(activityArtifact.packageName, `is`("androidx.activity"))
+    }
+
+
+    // these are learning tests
+    // do not want to include them in my tests
+
+    @Test(expected = HttpException::class)
+    @Ignore
+    fun httpException(): Unit = runBlocking {
+        val response = MockResponse()
+        response.setResponseCode(400)
+        mockWebServer.enqueue(response)
+
+        service.getPackages()
+    }
+
+    @Test(expected = ConnectException::class)
+    @Ignore
+    fun noConnection(): Unit = runBlocking {
+        mockWebServer.shutdown()
+
+        service.getPackages()
+    }
+
+    @Test(expected = SocketTimeoutException::class)
+    @Ignore
+    fun forAnyOtherThing(): Unit = runBlocking {
+        service.getPackages()
     }
 }

@@ -31,12 +31,14 @@ class FetchWorker(
         // TODO: show  notification only when showNotification is enabled
         setForeground(createForegroundInfo())
 
-        repository.fetchAndSave()
-        // now it assumes fetch and save was success all the time
-        // should add error handling
-        dataStoreHelper.saveLastFetchDate()
+        return try {
+            repository.fetchAndSave()
+            dataStoreHelper.saveLastFetchDate()
+            Result.success()
+        } catch (e: Exception) {
+            Result.failure()
+        }
 
-        return Result.success()
     }
 
     private fun createForegroundInfo(): ForegroundInfo {

@@ -14,6 +14,8 @@ class TrackerRepositoryImpl @Inject constructor(
     private val trackerDao: TrackerDao
 ) : TrackerRepository {
 
+    // TODO: launch in parallel and cancel everyone if any exception occurs in anyone
+    // throw that same exception
     override suspend fun fetchAndSave() {
         val packages = apiService.getPackages()
         val libraries = mutableListOf<Library>()
