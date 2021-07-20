@@ -15,10 +15,11 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import sku.app.lib_tracker.datastore.DataStoreHelper
 import sku.app.lib_tracker.repository.TrackerRepository
-import sku.app.lib_tracker.ui.WorkerState
 import sku.app.lib_tracker.test_utils.getOrAwaitValue
 import sku.app.lib_tracker.test_utils.mock
+import sku.app.lib_tracker.ui.WorkerState
 import sku.app.lib_tracker.work.TrackerWorkManagerImpl.Companion.UNIQUE_FETCH_WORK
 import sku.app.lib_tracker.work.fetch_worker.FetchWorker
 import java.util.concurrent.TimeUnit
@@ -32,6 +33,7 @@ class TrackerWorkManagerImplTest {
     private val context: Application = ApplicationProvider.getApplicationContext()
 
     private val repository = mock<TrackerRepository>()
+    private val helper = mock<DataStoreHelper>()
 
     private val factory = object : WorkerFactory() {
         override fun createWorker(
@@ -40,7 +42,7 @@ class TrackerWorkManagerImplTest {
             workerParameters: WorkerParameters
         ): ListenableWorker? {
             return if (workerClassName == FetchWorker::class.java.name) {
-                FetchWorker(repository, appContext, workerParameters)
+                FetchWorker(repository, helper, appContext, workerParameters)
             } else {
                 null
             }

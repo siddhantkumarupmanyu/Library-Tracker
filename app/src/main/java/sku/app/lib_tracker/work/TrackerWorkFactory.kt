@@ -1,6 +1,7 @@
 package sku.app.lib_tracker.work
 
 import androidx.work.DelegatingWorkerFactory
+import sku.app.lib_tracker.datastore.DataStoreHelper
 import sku.app.lib_tracker.repository.TrackerRepository
 import sku.app.lib_tracker.work.fetch_worker.FetchWorkerFactory
 import javax.inject.Inject
@@ -8,11 +9,12 @@ import javax.inject.Singleton
 
 @Singleton
 class TrackerWorkFactory @Inject constructor(
-    private val repository: TrackerRepository
+    private val repository: TrackerRepository,
+    private val dataStoreHelper: DataStoreHelper
 ) : DelegatingWorkerFactory() {
 
     init {
-        addFactory(FetchWorkerFactory(repository))
+        addFactory(FetchWorkerFactory(repository, dataStoreHelper))
     }
 
 }

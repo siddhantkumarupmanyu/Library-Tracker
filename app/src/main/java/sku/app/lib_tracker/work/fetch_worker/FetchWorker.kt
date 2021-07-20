@@ -13,10 +13,12 @@ import androidx.work.ForegroundInfo
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import sku.app.lib_tracker.R
+import sku.app.lib_tracker.datastore.DataStoreHelper
 import sku.app.lib_tracker.repository.TrackerRepository
 
 class FetchWorker(
     private val repository: TrackerRepository,
+    private val dataStoreHelper: DataStoreHelper,
     appContext: Context,
     workerParams: WorkerParameters
 ) : CoroutineWorker(appContext, workerParams) {
@@ -26,11 +28,13 @@ class FetchWorker(
 
     override suspend fun doWork(): Result {
 
+        // TODO: show  notification only when showNotification is enabled
         setForeground(createForegroundInfo())
 
         repository.fetchAndSave()
-
-        // TODO: show  notification only when showNotification is enabled
+        // now it assumes fetch and save was success all the time
+        // should add error handling
+        dataStoreHelper.saveLastFetchDate()
 
         return Result.success()
     }

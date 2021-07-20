@@ -17,6 +17,7 @@ import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
 import junit.framework.TestCase.fail
+import kotlinx.coroutines.*
 import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.MockWebServer
 import org.hamcrest.CoreMatchers.`is`
@@ -27,6 +28,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import sku.app.lib_tracker.datastore.DATA_STORE_FILE_NAME
+import sku.app.lib_tracker.datastore.DataStoreHelper
 import sku.app.lib_tracker.di.DataStoreModule
 import sku.app.lib_tracker.test_utils.DisableAnimationRule
 import sku.app.lib_tracker.test_utils.OkHttp3IdlingResource
@@ -53,8 +55,14 @@ class EndToEndTest {
     @BindValue
     val okHttpClient = OkHttpClient()
 
+    @BindValue
+    val dataStoreScope = TestDataStoreScope(CoroutineScope(Dispatchers.IO + SupervisorJob()))
+
     @Inject
     lateinit var workConfiguration: Configuration
+
+    @Inject
+    lateinit var helper: DataStoreHelper
 
     @Before
     fun startServer() {
@@ -77,31 +85,17 @@ class EndToEndTest {
     fun stopServer() {
         mockWebServer.shutdown()
 
+        tearDownDataStore()
+    }
+
+    private fun tearDownDataStore() {
+        dataStoreScope.scope.cancel()
         deleteDataStoreFiles()
     }
 
     @Test
-    fun fetchOnOpeningForFirstTimeInADay() {
-        enqueueResponse()
-
-        val activityScenario = ActivityScenario.launch(MainActivity::class.java)
-
-        assertRequestsAreMade()
-
-        activityScenario.close()
-
-        val activityScenario2 = ActivityScenario.launch(MainActivity::class.java)
-
-        assertRequestsAreNotMade()
-
-        onView(listMatcher().atPosition(0)).check(matches(hasDescendant(withText("activity"))))
-        onView(listMatcher().atPosition(3)).check(matches(hasDescendant(withText("work-testing"))))
-
-        activityScenario2.close()
-    }
-
-    @Test
     fun refresh() {
+        setDataIsAlreadyFetchedForToday()
         enqueueResponse()
 
         val activityScenario = ActivityScenario.launch(MainActivity::class.java)
@@ -119,10 +113,38 @@ class EndToEndTest {
         activityScenario.close()
     }
 
+
+    @Test
+    fun fetchOnOpeningForFirstTimeInADay() {
+        enqueueResponse()
+
+        val activityScenario = ActivityScenario.launch(MainActivity::class.java)
+
+        assertRequestsAreMade()
+
+        onView(listMatcher().atPosition(0)).check(matches(hasDescendant(withText("activity"))))
+        onView(listMatcher().atPosition(3)).check(matches(hasDescendant(withText("work-testing"))))
+
+        activityScenario.close()
+
+        val activityScenario2 = ActivityScenario.launch(MainActivity::class.java)
+
+        assertRequestsAreNotMade()
+
+        onView(listMatcher().atPosition(0)).check(matches(hasDescendant(withText("activity"))))
+        onView(listMatcher().atPosition(3)).check(matches(hasDescendant(withText("work-testing"))))
+
+        activityScenario2.close()
+    }
+
     private fun deleteDataStoreFiles() {
         val appContext = ApplicationProvider.getApplicationContext<Application>()
 
         appContext.tempDataStoreFile(DATA_STORE_FILE_NAME).delete()
+    }
+
+    private fun setDataIsAlreadyFetchedForToday() = runBlocking {
+        helper.saveLastFetchDate()
     }
 
     private fun assertRequestsAreMade() {

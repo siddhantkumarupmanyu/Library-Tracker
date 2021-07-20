@@ -15,6 +15,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito.verify
+import sku.app.lib_tracker.datastore.DataStoreHelper
 import sku.app.lib_tracker.repository.TrackerRepository
 import sku.app.lib_tracker.test_utils.mock
 import sku.app.lib_tracker.work.fetch_worker.FetchWorker
@@ -29,6 +30,8 @@ class FetchWorkerTest {
 
     private val repository = mock<TrackerRepository>()
 
+    private val helper = mock<DataStoreHelper>()
+
     private val factory = object : WorkerFactory() {
         override fun createWorker(
             appContext: Context,
@@ -36,7 +39,7 @@ class FetchWorkerTest {
             workerParameters: WorkerParameters
         ): ListenableWorker? {
             return if (workerClassName == FetchWorker::class.java.name) {
-                FetchWorker(repository, appContext, workerParameters)
+                FetchWorker(repository, helper, appContext, workerParameters)
             } else {
                 null
             }
@@ -60,10 +63,13 @@ class FetchWorkerTest {
     }
 
     @Test
-    fun fetchAndSave() = runBlocking {
+    fun fetchAndSaveLastFetchDate() = runBlocking {
         worker.doWork()
 
         verify(repository).fetchAndSave()
+        verify(helper).saveLastFetchDate()
     }
+
+    // add error cases
 
 }
