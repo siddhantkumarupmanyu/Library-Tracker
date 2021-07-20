@@ -13,7 +13,7 @@ how do I want to update the data
 
 updatedView will only show libraries which are bookmarked and latestVersion > oldVersion
 
-Feature 0: run work whenever user opens the app. (by default)
+DONE => Feature 0: run work whenever user opens the app. (by default)
     - should consider the case when user opens it multiple times in a day.
         - in that case we should only fetch it one time; on first opening
     - user can force fetch though
@@ -21,19 +21,11 @@ Feature 0: run work whenever user opens the app. (by default)
 Feature 1: Ability to Bookmark Libraries
     - only show diff between bookmarked libraries
     - auto fetch and showNotifications can be enabled
-        - will show notification if bookmarked library changes
+        - will show notification if bookmarked library changes (nope)
 
 Feature 2: user should have ability to enable fetching in background
     - in that case we gonna fetch every 12 hours
     - i.e. giving work manager interval of 12 hours
-
-From what I see we are going to need to use shared-pref
-    - in that case We should use datastore
-    - using
-
-Data Store keys:
-    - lastFetch: stores current day
-    - areNotifications enabled
 
 Comparing Versions of Artifacts
     - Will enable us implement feature 1
