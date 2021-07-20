@@ -18,13 +18,20 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito.*
 import sku.app.lib_tracker.R
+import sku.app.lib_tracker.TestDataStoreModule
+import sku.app.lib_tracker.datastore.DataStoreHelper
 import sku.app.lib_tracker.di.AppModule
+import sku.app.lib_tracker.di.DataStoreModule
 import sku.app.lib_tracker.repository.TrackerRepository
 import sku.app.lib_tracker.test_utils.*
 import sku.app.lib_tracker.work.TrackerWorkManager
 
 @RunWith(AndroidJUnit4::class)
-@UninstallModules(AppModule::class)
+@UninstallModules(
+    AppModule::class,
+    DataStoreModule::class,
+    TestDataStoreModule::class
+)
 @HiltAndroidTest
 class TrackerFragmentTest {
 
@@ -49,17 +56,27 @@ class TrackerFragmentTest {
     @BindValue
     val trackerWorkManager: TrackerWorkManager = mock()
 
+    @BindValue
+    val helper: DataStoreHelper = mock()
+
     private val recyclerViewMatcher = RecyclerViewMatcher(R.id.list_view)
 
     private val activityLibrary = TestUtils.createLibrary("androidx.activity")
     private val roomLibrary = TestUtils.createLibrary("androidx.room")
 
+    // DataStoreHelper values
+    // since functionality to fetch on init is already tested in ViewModel's test,
+    // we will keep this as false throughout these tests
+    private val shouldFetch = false
+
     @Before
-    fun setUp() {
+    fun setUp(): Unit = runBlocking {
         // Populate @Inject fields in test class
         hiltRule.inject()
 
         `when`(repository.loadLibraries()).thenReturn(flowOf(listOf(activityLibrary, roomLibrary)))
+
+        `when`(helper.shouldFetch()).thenReturn(shouldFetch)
 
         launchFragmentInHiltContainer<TrackerFragment> {
             dataBindingIdlingResourceRule.monitorFragment(this)
@@ -87,7 +104,7 @@ class TrackerFragmentTest {
     @Test
     fun refreshLibrariesSuccess() = runBlocking {
         val workerState = MutableLiveData(WorkerState.ENQUEUED)
-        `when`(trackerWorkManager.getFetchWorkInfo()).thenReturn(workerState)
+        `when`(trackerWorkManager.getFetchWorkerState()).thenReturn(workerState)
 
         onView(withId(R.id.refresh)).perform(click())
 
@@ -101,7 +118,7 @@ class TrackerFragmentTest {
     @Test
     fun refreshLibrariesFail_OnRetrySuccess() {
         val workerState = MutableLiveData(WorkerState.ENQUEUED)
-        `when`(trackerWorkManager.getFetchWorkInfo()).thenReturn(workerState)
+        `when`(trackerWorkManager.getFetchWorkerState()).thenReturn(workerState)
 
         onView(withId(R.id.refresh)).perform(click())
 

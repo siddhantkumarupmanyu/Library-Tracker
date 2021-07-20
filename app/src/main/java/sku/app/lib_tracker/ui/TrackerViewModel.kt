@@ -30,21 +30,21 @@ class TrackerViewModel @Inject constructor(
         viewModelScope.launch {
             if (dataStoreHelper.shouldFetch()) {
                 trackerWorkManager.runFetchWorker()
-                val stateLiveData = trackerWorkManager.getFetchWorkInfo()
-                WorkStateObserver(stateLiveData)
+                val stateLiveData = trackerWorkManager.getFetchWorkerState()
+                WorkerStateObserver(stateLiveData)
             }
         }
     }
 
     fun refresh() {
         trackerWorkManager.runFetchWorker()
-        val stateLiveData = trackerWorkManager.getFetchWorkInfo()
-        WorkStateObserver(stateLiveData)
+        val stateLiveData = trackerWorkManager.getFetchWorkerState()
+        WorkerStateObserver(stateLiveData)
     }
 
     // worker state observer
     // removes itself after finishing
-    private inner class WorkStateObserver(
+    private inner class WorkerStateObserver(
         private val workerStateLiveData: LiveData<WorkerState>
     ) : Observer<WorkerState> {
 

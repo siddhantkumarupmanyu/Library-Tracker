@@ -19,6 +19,7 @@ import androidx.work.testing.WorkManagerTestInitHelper
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import dagger.hilt.android.testing.UninstallModules
 import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.MockWebServer
 import org.hamcrest.CoreMatchers.`is`
@@ -29,11 +30,13 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import sku.app.lib_tracker.di.DataStoreModule
 import sku.app.lib_tracker.test_utils.DisableAnimationRule
 import javax.inject.Inject
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
+@UninstallModules(DataStoreModule::class)
 @HiltAndroidTest
 class NotificationTest {
 

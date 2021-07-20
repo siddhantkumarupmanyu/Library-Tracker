@@ -8,6 +8,6 @@ interface TrackerWorkManager {
 
     fun runFetchWorker()
 
-    fun getFetchWorkInfo(): LiveData<WorkerState>
+    fun getFetchWorkerState(): LiveData<WorkerState>
 
 }

@@ -6,6 +6,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.core.DataStoreFactory
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dagger.hilt.testing.TestInstallIn
 import sku.app.lib_tracker.datastore.*
@@ -14,11 +15,13 @@ import java.io.File
 import javax.inject.Singleton
 
 
+
+//@TestInstallIn(
+//    components = [SingletonComponent::class],
+//    replaces = [DataStoreModule::class]
+//)
 @Module
-@TestInstallIn(
-    components = [SingletonComponent::class],
-    replaces = [DataStoreModule::class]
-)
+@InstallIn(SingletonComponent::class)
 object TestDataStoreModule {
 
 

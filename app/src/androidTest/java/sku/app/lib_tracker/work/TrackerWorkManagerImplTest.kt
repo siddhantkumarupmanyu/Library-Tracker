@@ -79,13 +79,13 @@ class TrackerWorkManagerImplTest {
         // making sure work is in SUCCEEDED state when we assert it
         delay(50)
 
-        val info = trackerWorkManager.getFetchWorkInfo().getOrAwaitValue()
+        val info = trackerWorkManager.getFetchWorkerState().getOrAwaitValue()
         assertThat(info, `is`(WorkerState.SUCCEEDED))
     }
 
     @Test
     fun workIsNotRanAtLeastOnce() {
-        val info = trackerWorkManager.getFetchWorkInfo().getOrAwaitValue()
+        val info = trackerWorkManager.getFetchWorkerState().getOrAwaitValue()
 
         assertThat(info, `is`(WorkerState.NOT_RAN))
     }

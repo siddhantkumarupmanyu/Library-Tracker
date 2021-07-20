@@ -33,7 +33,7 @@ class TrackerWorkManagerImpl @Inject constructor(
         enqueuedOnce = true
     }
 
-    override fun getFetchWorkInfo(): LiveData<WorkerState> {
+    override fun getFetchWorkerState(): LiveData<WorkerState> {
         return workManager.getWorkInfosByTagLiveData(FETCH_WORK_TAG).map {
             val state = if (enqueuedOnce) {
                 it[0].state.workerState()

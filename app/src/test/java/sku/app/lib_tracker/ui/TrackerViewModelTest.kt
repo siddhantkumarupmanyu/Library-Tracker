@@ -55,7 +55,7 @@ class TrackerViewModelTest {
         manager = mock()
         helper = mock()
 
-        `when`(manager.getFetchWorkInfo()).thenReturn(workerInfoState)
+        `when`(manager.getFetchWorkerState()).thenReturn(workerInfoState)
 
         `when`(manager.runFetchWorker()).then {
             workerInfoState.postValue(WorkerState.ENQUEUED)
@@ -137,7 +137,7 @@ class TrackerViewModelTest {
 //        assertThat(captor.value.peekContent(), `is`(WorkerState.SUCCEEDED))
         assertThat(viewModel.events.getEventValue(), `is`(WorkerState.SUCCEEDED))
 
-        verify(manager).getFetchWorkInfo()
+        verify(manager).getFetchWorkerState()
         verify(manager).runFetchWorker()
     }
 
@@ -174,7 +174,7 @@ class TrackerViewModelTest {
             `is`(nullValue()) // since we have already consumed last Succeeded event, see getEventValue
         )
 
-        verify(manager).getFetchWorkInfo()
+        verify(manager).getFetchWorkerState()
         verify(manager).runFetchWorker()
     }
 
