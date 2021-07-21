@@ -11,14 +11,14 @@ how do I want to update the data
         - this is good; will see if room have something like this; so update operations are faster
         - I think room automatically diff
 
-updatedView will only show libraries which are bookmarked and latestVersion > oldVersion
+updatedView/Bookmarked Fragment will only show libraries which are bookmarked and latestVersion > oldVersion
 
-DONE => Feature 0: run work whenever user opens the app. (by default)
+DONE => Feature 0: run work whenever user opens the app.
     - should consider the case when user opens it multiple times in a day.
         - in that case we should only fetch it one time; on first opening
-    - user can force fetch though
+    - user can force fetch though (refresh)
 
-Feature 1: Ability to Bookmark Libraries
+Feature 1: Ability to Bookmark Libraries <== here
     - only show diff between bookmarked libraries
     - auto fetch and showNotifications can be enabled
         - will show notification if bookmarked library changes (nope)
