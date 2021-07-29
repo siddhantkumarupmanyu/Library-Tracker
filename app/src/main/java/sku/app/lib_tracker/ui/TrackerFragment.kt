@@ -11,7 +11,9 @@ import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import sku.app.lib_tracker.R
 import sku.app.lib_tracker.databinding.TrackerFragmentBinding
+import sku.app.lib_tracker.vo.Artifact
 import sku.app.lib_tracker.vo.EventObserver
+import sku.app.lib_tracker.vo.Library
 
 @AndroidEntryPoint
 class TrackerFragment : Fragment() {
@@ -52,14 +54,52 @@ class TrackerFragment : Fragment() {
         adapter = LibraryAdapter()
         binding.listView.adapter = adapter
 
-        viewModel.libraries.observe(viewLifecycleOwner) {
-            it?.let { libraries ->
-                adapter.submitList(libraries)
-            }
-        }
+        setFakeValuesOnAdapter()
 
-        setupEventObserver()
+        // since now i am working on ui i would be using static values for now
+//        viewModel.libraries.observe(viewLifecycleOwner) {
+//            it?.let { libraries ->
+//                adapter.submitList(libraries)
+//            }
+//        }
 
+//        setupEventObserver()
+
+    }
+
+    // TODO: remove this code
+    fun setFakeValuesOnAdapter() {
+        val artifacts1 = listOf(
+            Artifact(
+                "activity",
+                Artifact.Version("1.0.1", "1.1.1-beta02"),
+                "androidx.activity"
+            ),
+            Artifact(
+                "activity-compose",
+                Artifact.Version("1.0.1", "1.1.1-beta02"),
+                "androidx.activity"
+            )
+        )
+        val artifacts2 = listOf(
+            Artifact(
+                "work",
+                Artifact.Version("1.0.1", "1.1.1-beta02"),
+                "androidx.work"
+            ),
+            Artifact(
+                "work-test",
+                Artifact.Version("1.0.1", "1.1.1-beta02"),
+                "androidx.work"
+            )
+        )
+
+        val libraries = listOf(
+            Library("androidx.activity", artifacts1),
+            Library("androidx.work", artifacts2)
+        )
+
+        adapter.submitList(libraries)
     }
 
     private fun setupEventObserver() {
