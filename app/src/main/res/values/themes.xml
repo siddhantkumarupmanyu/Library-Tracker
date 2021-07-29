@@ -45,6 +45,11 @@
         <item name="textAppearanceCaption">@style/TextAppearance.LibraryTracker.Caption</item>
         <item name="textAppearanceOverline">@style/TextAppearance.LibraryTracker.Overline</item>
 
+        <item name="emphasisHighAlpha">0.87</item>
+        <item name="emphasisMediumAlpha">0.60</item>
+        <item name="emphasisLowAlpha">0.38</item>
+
+
     </style>
 </resources>
 
