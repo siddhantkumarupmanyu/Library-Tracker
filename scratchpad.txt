@@ -27,12 +27,16 @@ Feature 2: user should have ability to enable fetching in background
     - in that case we gonna fetch every 12 hours
     - i.e. giving work manager interval of 12 hours
 
+Feature 3:
+    - sort by date option in main screen
+    - able to search
+    - update date for a library is same as last modified header date in response of group-index
+
 Comparing Versions of Artifacts
     - Will enable us implement feature 1
 
-update date for a library is same as last modified header date in response of group-index
-
-
+Currently, trying to find if i should use bottom navigation or viewpager
+    - going with viewpager
 ========================================================================
 UI Enhancements (After Implementing all of the above functionality)
  - swipe to refresh
