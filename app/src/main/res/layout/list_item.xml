@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -46,7 +47,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_weight="1"
                     android:alpha="?attr/emphasisHighAlpha"
-                    android:text="activity"
+                    tools:text="activity"
                     android:textAppearance="?attr/textAppearanceHeadline6"
                     android:textColor="?attr/colorOnSurface" />
 
@@ -64,12 +65,7 @@
 
             </LinearLayout>
 
-            <View
-                android:id="@+id/item_divider"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:alpha="0.12"
-                android:background="?attr/colorOnSurface" />
+            <include layout="@layout/divider" />
 
             <LinearLayout
                 android:id="@+id/artifacts_container"
@@ -78,9 +74,10 @@
                 android:orientation="vertical"
                 android:paddingVertical="4dp">
 
-                <include layout="@layout/artifact_item" />
-
-                <include layout="@layout/artifact_item" />
+                <include
+                    layout="@layout/artifact_item"
+                    tools:visibility="visible"
+                    android:visibility="gone" />
 
             </LinearLayout>
 
