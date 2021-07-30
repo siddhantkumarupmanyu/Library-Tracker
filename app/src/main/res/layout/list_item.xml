@@ -47,7 +47,8 @@
                     android:layout_marginStart="16dp"
                     android:layout_weight="1"
                     android:alpha="?attr/emphasisHighAlpha"
-                    tools:text="activity"
+                    tools:text="androidx.activity"
+                    android:text="@{library.packageName}"
                     android:textAppearance="?attr/textAppearanceHeadline6"
                     android:textColor="?attr/colorOnSurface" />
 
