@@ -28,10 +28,6 @@ class LibraryAdapter : ListAdapter<Library, RecyclerView.ViewHolder>(DiffCallbac
         RecyclerView.ViewHolder(binding.root) {
 
         init {
-            binding.cardView.setOnLongClickListener {
-                binding.cardView.isChecked = !binding.cardView.isChecked
-                true
-            }
             // data-binding hack
             // binding.linearLayout.removeViewAt(0)
         }

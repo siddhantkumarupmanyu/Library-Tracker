@@ -6,4 +6,6 @@
     <dimen name="card_side_margin">12dp</dimen>
     <dimen name="card_bottom_margin">26dp</dimen>
 
+    <dimen name="image_foreground_radius">24dp</dimen>
+
 </resources>
