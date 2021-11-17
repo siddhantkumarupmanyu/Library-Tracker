@@ -11,7 +11,7 @@ import java.time.Month
 class CustomDateTest {
 
     @Test
-    fun today() {
+    fun customDateTakesTodayAsDefault() {
         val date = CustomDate()
 
         val expected = LocalDate.now().toString()
