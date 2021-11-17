@@ -7,7 +7,5 @@ interface TrackerRepository {
 
     val libraries: Flow<List<Library>>
 
-    // todo: Rename To fetchLibraries
     suspend fun fetchAndSave()
-    // fun loadLibraries(): Flow<List<Library>>
 }

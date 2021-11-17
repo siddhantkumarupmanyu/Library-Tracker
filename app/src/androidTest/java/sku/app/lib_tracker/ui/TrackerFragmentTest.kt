@@ -74,7 +74,7 @@ class TrackerFragmentTest {
         // Populate @Inject fields in test class
         hiltRule.inject()
 
-        `when`(repository.loadLibraries()).thenReturn(flowOf(listOf(activityLibrary, roomLibrary)))
+        `when`(repository.libraries).thenReturn(flowOf(listOf(activityLibrary, roomLibrary)))
 
         `when`(helper.shouldFetch()).thenReturn(shouldFetch)
 
@@ -98,7 +98,7 @@ class TrackerFragmentTest {
         onView(recyclerViewMatcher.atPosition(1))
             .check(matches(hasDescendant(withText("1.2.3"))))
 
-        verify(repository).loadLibraries()
+        verify(repository).libraries
     }
 
     @Test

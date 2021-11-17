@@ -55,21 +55,21 @@ class TrackerFragment : Fragment() {
         binding.listView.adapter = adapter
 
 
-        // TODO: remove this and make the end-to-end tests pass for now
-        setFakeValuesOnAdapter()
+        // will remove this when I am actually done with UI
+        // setFakeValuesOnAdapter()
 
         // since now i am working on ui i would be using static values for now
-//        viewModel.libraries.observe(viewLifecycleOwner) {
-//            it?.let { libraries ->
-//                adapter.submitList(libraries)
-//            }
-//        }
+        viewModel.libraries.observe(viewLifecycleOwner) {
+            it?.let { libraries ->
+                adapter.submitList(libraries)
+            }
+        }
 
-//        setupEventObserver()
+        setupEventObserver()
 
     }
 
-    // TODO: remove this code
+    // will remove this when I am actually done with UI
     fun setFakeValuesOnAdapter() {
         val artifacts1 = listOf(
             Artifact(
