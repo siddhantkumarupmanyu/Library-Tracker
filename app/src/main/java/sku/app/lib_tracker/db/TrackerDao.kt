@@ -15,5 +15,4 @@ abstract class TrackerDao {
 
     @Query("SELECT * FROM artifact")
     abstract fun loadArtifacts(): Flow<List<Artifact>>
-
 }

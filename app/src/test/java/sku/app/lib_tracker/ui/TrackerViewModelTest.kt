@@ -38,9 +38,9 @@ class TrackerViewModelTest {
     @get:Rule
     var mainCoroutineRule = MainCoroutineRule()
 
-    private lateinit var repository: TrackerRepository
-    private lateinit var manager: TrackerWorkManager
-    private lateinit var helper: DataStoreHelper
+    private lateinit var trackerRepository: TrackerRepository
+    private lateinit var trackerWorkManager: TrackerWorkManager
+    private lateinit var dataStoreHelper: DataStoreHelper
 
     private lateinit var viewModel: TrackerViewModel
 
@@ -51,32 +51,32 @@ class TrackerViewModelTest {
 
     @Before
     fun setup(): Unit = runBlocking {
-        repository = mock()
-        manager = mock()
-        helper = mock()
+        trackerRepository = mock()
+        trackerWorkManager = mock()
+        dataStoreHelper = mock()
 
-        `when`(manager.getFetchWorkerState()).thenReturn(workerInfoState)
+        `when`(trackerWorkManager.getFetchWorkerState()).thenReturn(workerInfoState)
 
-        `when`(manager.runFetchWorker()).then {
+        `when`(trackerWorkManager.runFetchWorker()).then {
             workerInfoState.postValue(WorkerState.ENQUEUED)
         }
 
-        `when`(helper.shouldFetch()).thenReturn(false)
+        `when`(dataStoreHelper.shouldFetch()).thenReturn(false)
 
-        viewModel = TrackerViewModel(manager, repository, helper)
+        viewModel = TrackerViewModel(trackerWorkManager, trackerRepository, dataStoreHelper)
     }
 
     @Test
     fun loadLibraries(): Unit = runBlocking {
         val flow = flowOf(listOf(activityLibrary, roomLibrary))
-        `when`(repository.loadLibraries()).thenReturn(flow)
+        `when`(trackerRepository.libraries).thenReturn(flow)
 
         assertThat(
             viewModel.libraries.getOrAwaitValue(),
             `is`(equalTo(listOf(activityLibrary, roomLibrary)))
         )
 
-        verify(repository).loadLibraries()
+        verify(trackerRepository).libraries
     }
 
     @ExperimentalCoroutinesApi
@@ -98,7 +98,7 @@ class TrackerViewModelTest {
             emit(listOf(updateActivityLib, updateRoomLib))
         }
 
-        `when`(repository.loadLibraries()).thenReturn(libs)
+        `when`(trackerRepository.libraries).thenReturn(libs)
 
         val observer = mock<Observer<List<Library>>>()
 
@@ -109,7 +109,7 @@ class TrackerViewModelTest {
         advanceUntilIdle()
 
         verify(observer).onChanged(listOf(updateActivityLib, updateRoomLib))
-        verify(repository).loadLibraries()
+        verify(trackerRepository).libraries
     }
 
     @Test
@@ -137,23 +137,23 @@ class TrackerViewModelTest {
 //        assertThat(captor.value.peekContent(), `is`(WorkerState.SUCCEEDED))
         assertThat(viewModel.events.getEventValue(), `is`(WorkerState.SUCCEEDED))
 
-        verify(manager).getFetchWorkerState()
-        verify(manager).runFetchWorker()
+        verify(trackerWorkManager).getFetchWorkerState()
+        verify(trackerWorkManager).runFetchWorker()
     }
 
     // shouldFetch = false already being tested in refresh
     @Test
     fun runFetchWorkerOnInitialization() = mainCoroutineRule.runBlockingTest {
-        reset(helper)
+        reset(dataStoreHelper)
 
-        `when`(helper.shouldFetch()).thenReturn(true)
+        `when`(dataStoreHelper.shouldFetch()).thenReturn(true)
 
-        val viewModel = TrackerViewModel(manager, repository, helper)
+        val viewModel = TrackerViewModel(trackerWorkManager, trackerRepository, dataStoreHelper)
 
         assertThat(viewModel.events.getEventValue(), `is`(equalTo(WorkerState.ENQUEUED)))
 
-        verify(helper).shouldFetch()
-        verify(manager).runFetchWorker()
+        verify(dataStoreHelper).shouldFetch()
+        verify(trackerWorkManager).runFetchWorker()
     }
 
     @Test
@@ -174,8 +174,8 @@ class TrackerViewModelTest {
             `is`(nullValue()) // since we have already consumed last Succeeded event, see getEventValue
         )
 
-        verify(manager).getFetchWorkerState()
-        verify(manager).runFetchWorker()
+        verify(trackerWorkManager).getFetchWorkerState()
+        verify(trackerWorkManager).runFetchWorker()
     }
 
 }

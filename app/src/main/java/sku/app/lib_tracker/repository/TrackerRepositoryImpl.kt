@@ -14,6 +14,12 @@ class TrackerRepositoryImpl @Inject constructor(
     private val trackerDao: TrackerDao
 ) : TrackerRepository {
 
+    override val libraries: Flow<List<Library>>
+        get() = trackerDao.loadArtifacts().map { artifacts ->
+            fromArtifactsToLibrary(artifacts)
+        }
+
+
     // TODO: launch in parallel and cancel everyone if any exception occurs in anyone
     // throw that same exception
     override suspend fun fetchAndSave() {
@@ -27,12 +33,6 @@ class TrackerRepositoryImpl @Inject constructor(
             it.artifacts
         }
         trackerDao.insertArtifacts(artifacts)
-    }
-
-    override fun loadLibraries(): Flow<List<Library>> {
-        return trackerDao.loadArtifacts().map { artifacts ->
-            fromArtifactsToLibrary(artifacts)
-        }
     }
 
     fun fromArtifactsToLibrary(list: List<Artifact>): List<Library> {

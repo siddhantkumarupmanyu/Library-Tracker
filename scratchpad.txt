@@ -59,4 +59,9 @@ https://stackoverflow.com/a/58659423
       ** Networking libraries such as Retrofit and Volley manage their own threads
        and do not require explicit main-safety in your code when used with Kotlin coroutines.
 
+I am noting some things,
+1. Library Tracker code especially test code is becoming too much pain/complicated due to usage of both LiveData and Flow.
+2. So it would be better if somehow Livedata can be replaced with Flow
+3. Since Flow is also a Language Feature or better FrameWork Feature it would be much greater to use it.
+4. Should we be using Flow in Domain like on abstract level, well it depends since my code does not have that much of a domain we can. It depends on Stability of the class. Is flow stable enough?
 

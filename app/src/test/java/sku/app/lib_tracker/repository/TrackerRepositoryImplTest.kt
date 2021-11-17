@@ -64,7 +64,7 @@ class TrackerRepositoryImplTest {
         val flow = flowOf(listOf(activityArtifact, roomArtifact))
         `when`(trackerDao.loadArtifacts()).thenReturn(flow)
 
-        val actual = repository.loadLibraries().first()
+        val actual = repository.libraries.first()
 
 
         assertLibraries(
@@ -94,7 +94,7 @@ class TrackerRepositoryImplTest {
         val libraries = mutableListOf<List<Library>>()
 
         val job = launch {
-            repository.loadLibraries().toList(libraries)
+            repository.libraries.toList(libraries)
         }
 
         advanceTimeBy(2000)

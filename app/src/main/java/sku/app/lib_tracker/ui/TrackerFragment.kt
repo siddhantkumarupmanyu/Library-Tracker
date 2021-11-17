@@ -54,6 +54,8 @@ class TrackerFragment : Fragment() {
         adapter = LibraryAdapter()
         binding.listView.adapter = adapter
 
+
+        // TODO: remove this and make the end-to-end tests pass for now
         setFakeValuesOnAdapter()
 
         // since now i am working on ui i would be using static values for now

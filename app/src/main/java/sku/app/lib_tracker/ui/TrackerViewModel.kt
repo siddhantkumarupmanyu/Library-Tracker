@@ -19,7 +19,7 @@ class TrackerViewModel @Inject constructor(
 ) : ViewModel() {
 
     val libraries: LiveData<List<Library>> = liveData {
-        repository.loadLibraries().collect {
+        repository.libraries.collect {
             emit(it)
         }
     }
