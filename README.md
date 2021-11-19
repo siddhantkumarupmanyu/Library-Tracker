@@ -1,5 +1,5 @@
 # Library Tracker
-A app that fetch and notify when there is a change in bookmarked Android Library.
+An App that fetch and notify when there is a change in bookmarked Android Library.
 <br />
 <br />
 <img src="Library-Tracker.png" alt="App Screenshot" width="280">
