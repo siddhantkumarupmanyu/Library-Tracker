@@ -25,8 +25,9 @@ An App that fetch and notify when there is a change in bookmarked Android Librar
 * Code Documents itself
 * Code Follows Separation Of Concerns
 * Have Unit Tests for each Class or better Unit
+* Each Unit is decoupled from other. i.e Follows Low Coupling, High Cohesion
 * Have End To End Tests
-* Test tests behavior instead of implementations
+* Tests behavior instead of implementations
 
 ## Libraries Used
 * Kotlin
