@@ -1,3 +1,10 @@
+
+This page is full of text, which is somehow not clear,
+so here's what I will do next
+    - first of all try to implement that expandable behaviour.
+    - second implement that viewpager
+    - third make that diff work
+
 ======================================================
 
 implement api requests to run in parallel

@@ -39,6 +39,7 @@ class TrackerFragment : Fragment() {
             false
         )
 
+        // TODO: if I read the docs right, we should not be calling this if we are using custom Toolbar
         setHasOptionsMenu(true)
 
         return binding.root
